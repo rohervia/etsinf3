@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
+#include <omp.h>
 
 /* Funcion f(x) de la cual se quiere calcular la integral */
 double f(double x)
@@ -18,9 +19,17 @@ double calcula_integral1(double a, double b, int n)
 
    h=(b-a)/n;
 
+   double t1, t2;
+   t1 = omp_get_wtime();
+
+   #pragma omp parallel for reduction(+:s)
    for (i=0; i<n; i++) {
       s+=f(a+h*(i+0.5));
    }
+
+   t2 = omp_get_wtime();
+
+   printf("time: %f\n", t2 - t1);
 
    result = h*s;
    return result;
@@ -38,6 +47,7 @@ double calcula_integral2(double a, double b, int n)
 
    h=(b-a)/n;
 
+   #pragma omp parallel for reduction(+:s) private(x)
    for (i=0; i<n; i++) {
       x=a+h*(i+0.5);
       /* Duermo un poco. Si la paralelización está bien hecha
