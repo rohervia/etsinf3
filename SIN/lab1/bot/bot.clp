@@ -2,9 +2,17 @@
     (grid 5 4)
     (max-bulbs 3)
     (warehouse 2 3)
-    (max-level 30)
+    (max-level 0)
     (robot 1 3 0 lamp 3 4 3 lamp 4 2 2 lamp 5 4 2 level 0 fact -1))
 
+(defrule init
+    (declare (salience 100))
+    ?f <- (max-level 0)
+=>
+    (printout t "Input the maximum level: ")
+    (bind ?s (read-number))
+    (retract ?f)
+    (assert (max-level ?s)))
 
 (defrule right
     ?f <- (robot ?x ?y $?z level ?l fact ?)
@@ -79,9 +87,9 @@
     (halt))
 
 (defrule lose
+    (declare (salience -10))
     (max-level ?ml)
     (robot $? level ?l $?)
-    (declare (salience (+ -100 ?l))
     (test (>= ?l ?ml))
 =>
     (printout t "Reached max level" crlf)
