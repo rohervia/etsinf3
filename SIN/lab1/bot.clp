@@ -2,6 +2,7 @@
     (grid 5 4)
     (max-bulbs 3)
     (warehouse 2 3)
+    (max-level 30)
     (robot 1 3 0 lamp 3 4 3 lamp 4 2 2 lamp 5 4 2 level 0 fact -1))
 
 
@@ -75,4 +76,13 @@
     (robot ?x ?y ? level ?l fact ?)
 =>
     (printout t "All lamps fixed! At level " ?l crlf)
+    (halt))
+
+(defrule lose
+    (max-level ?ml)
+    (robot $? level ?l $?)
+    (declare (salience (+ -100 ?l))
+    (test (>= ?l ?ml))
+=>
+    (printout t "Reached max level" crlf)
     (halt))
