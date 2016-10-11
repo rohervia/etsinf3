@@ -5,7 +5,5 @@ var msg = JSON.stringify({
     "port":process.argv[5]
 });
 
-console.log(msg);
-
-var socket = net.connect({port:process.argv[3], address:process.argv[4]},
-    function() {socket.write(msg);});
+var socket = net.connect({port:process.argv[3], address:process.argv[2]},
+    function() {socket.write(msg); socket.end();});

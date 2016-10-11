@@ -2,8 +2,8 @@ var net = require('net');
 
 var LOCAL_PORT = 8000;
 var LOCAL_IP = '127.0.0.1';
-var REMOTE_PORT = process.argv[2];
-var REMOTE_IP = process.argv[3]; //www.iti.es
+var REMOTE_PORT = Number(process.argv[2]);
+var REMOTE_IP = process.argv[3];
 
 var server = net.createServer(function(socket) {
     socket.on('data', function(msg) {
