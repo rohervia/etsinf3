@@ -14,9 +14,10 @@ int primo(Entero_grande n)
 
   if (p) {
     s = sqrt(n);
-
-    for (i = 3; p && i <= s; i += 2)
-      if (n % i == 0) p = 0;
+    
+	#pragma omp parallel for private(i)
+	for (i = 3; p && i <= s; i += 2)
+	  if (n % i == 0) p = 0;
   }
 
   return p;
