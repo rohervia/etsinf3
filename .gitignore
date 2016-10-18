@@ -2,3 +2,4 @@
 
 TSR/test1/*.txt
 TSR/lab1/rproxy/*.json
+TSR/*/node_modules/
