@@ -1,0 +1,49 @@
+Amdahl's law: S' = 1 / (1 - F + F/S)
+
+                scalar-std  scalar-sse  scalar-load
+execution time  0.870s      0.750s      0.573s
+
+S = (0.870 - 0.573) / (0.750 - 0.573) = 1.67796 -> 67.80% local speedup
+S' = ()
+
+std     sse     speedup     time fraction
+matrix  8.473s  7.220s  17.35%
+
+scalar-std
+Rep = 100000 / size = 1024
+
+real	0m0.872s
+user	0m0.870s
+sys	0m0.000s
+scalar-sse
+Rep = 100000 / size = 1024
+
+real	0m0.752s
+user	0m0.750s
+sys	0m0.000s
+scalar-none
+Rep = 100000 / size = 1024
+
+real	0m0.576s
+user	0m0.573s
+sys	0m0.000s
+
+
+matrix-std
+Rep = 1 / size = 1024
+
+real	0m8.502s
+user	0m8.473s
+sys	0m0.023s
+matrix-sse
+Rep = 1 / size = 1024
+
+real	0m7.226s
+user	0m7.220s
+sys	0m0.000s
+matrix-res
+Rep = 1 / size = 1024
+
+real	0m5.733s
+user	0m5.727s
+sys	0m0.003s
