@@ -1,5 +1,4 @@
-(load bot.clp)
-(set-strategy breadth)
+(load hbot.clp)
 (reset)
 (run)
 21

@@ -1,26 +1,50 @@
+         CLIPS (Quicksilver Beta 5/31/08)
+CLIPS> Defining deffacts: bot
+Defining deffunction: dist
+Defining deffunction: h
+Defining defglobal: f
+Defining deffunction: heur
+Defining defrule: init +j+j
+Defining defrule: right +j+j+j+j
+Defining defrule: left =j+j+j
+Defining defrule: up =j=j+j+j
+Defining defrule: down =j+j+j
+Defining defrule: load =j+j+j+j
+Defining defrule: replace +j+j+j
+Defining defrule: duplicate +j+j+j
+Defining defrule: duplicateprev +j+j+j
+Defining defrule: goal +j+j
+Defining defrule: lose +j+j+j
+TRUE
+CLIPS> CLIPS> Input the maximum level: All lamps fixed! At level 21
+CLIPS> f-0     (initial-fact)
 f-1     (grid 5 4)
 f-2     (max-bulbs 3)
 f-3     (warehouse 2 3)
-f-4     (robot 1 3 0 lamp 3 4 3 lamp 4 2 2 lamp 5 4 2 level  0 fact  -1)    initial
-f-7     (robot 2 3 0 lamp 3 4 3 lamp 4 2 2 lamp 5 4 2 level  1 fact   4)    right
-f-8     (robot 2 3 3 lamp 3 4 3 lamp 4 2 2 lamp 5 4 2 level  2 fact   7)    load
-f-18    (robot 2 2 3 lamp 3 4 3 lamp 4 2 2 lamp 5 4 2 level  3 fact   8)    down
-f-38    (robot 3 2 3 lamp 3 4 3 lamp 4 2 2 lamp 5 4 2 level  4 fact  18)    right
-f-73    (robot 4 2 3 lamp 3 4 3 lamp 4 2 2 lamp 5 4 2 level  5 fact  38)    right
-f-74    (robot 4 2 1 lamp 3 4 3            lamp 5 4 2 level  6 fact  73)    replace
-f-110   (robot 3 2 1 lamp 3 4 3            lamp 5 4 2 level  7 fact  74)    left
-f-149   (robot 2 2 1 lamp 3 4 3            lamp 5 4 2 level  8 fact 110)    left
-f-194   (robot 2 3 1 lamp 3 4 3            lamp 5 4 2 level  9 fact 149)    up
-f-195   (robot 2 3 3 lamp 3 4 3            lamp 5 4 2 level 10 fact 194)    load
-f-256   (robot 2 4 3 lamp 3 4 3            lamp 5 4 2 level 11 fact 195)    up
-f-322   (robot 3 4 3 lamp 3 4 3            lamp 5 4 2 level 12 fact 256)    right
-f-323   (robot 3 4 0                       lamp 5 4 2 level 13 fact 322)    replace
-f-383   (robot 3 3 0                       lamp 5 4 2 level 14 fact 323)    down
-f-445   (robot 2 3 0                       lamp 5 4 2 level 15 fact 383)    left
-f-446   (robot 2 3 3                       lamp 5 4 2 level 16 fact 445)    load
-f-531   (robot 2 4 3                       lamp 5 4 2 level 17 fact 446)    up
-f-626   (robot 3 4 3                       lamp 5 4 2 level 18 fact 531)    right
-f-724   (robot 4 4 3                       lamp 5 4 2 level 19 fact 626)    right
-f-804   (robot 5 4 3                       lamp 5 4 2 level 20 fact 724)    right
-f-805   (robot 5 4 1                                  level 21 fact 804)    replace
-For a total of 277 facts.
+f-5     (robot 1 3 0 lamp 3 4 3 lamp 4 2 2 lamp 5 4 2 level 0 fact -1)
+f-6     (max-level 21)
+f-7     (robot 2 3 0 lamp 3 4 3 lamp 4 2 2 lamp 5 4 2 level 1 fact 5)
+f-8     (robot 1 4 0 lamp 3 4 3 lamp 4 2 2 lamp 5 4 2 level 1 fact 5)
+f-9     (robot 1 2 0 lamp 3 4 3 lamp 4 2 2 lamp 5 4 2 level 1 fact 5)
+f-10    (robot 2 3 3 lamp 3 4 3 lamp 4 2 2 lamp 5 4 2 level 2 fact 7)
+f-11    (robot 3 3 3 lamp 3 4 3 lamp 4 2 2 lamp 5 4 2 level 3 fact 10)
+f-12    (robot 3 4 3 lamp 3 4 3 lamp 4 2 2 lamp 5 4 2 level 4 fact 11)
+f-13    (robot 3 4 0 lamp 4 2 2 lamp 5 4 2 level 5 fact 12)
+f-14    (robot 2 4 0 lamp 4 2 2 lamp 5 4 2 level 6 fact 13)
+f-15    (robot 2 3 0 lamp 4 2 2 lamp 5 4 2 level 7 fact 14)
+f-16    (robot 2 3 3 lamp 4 2 2 lamp 5 4 2 level 8 fact 15)
+f-17    (robot 3 3 3 lamp 4 2 2 lamp 5 4 2 level 9 fact 16)
+f-18    (robot 4 3 3 lamp 4 2 2 lamp 5 4 2 level 10 fact 17)
+f-19    (robot 4 2 3 lamp 4 2 2 lamp 5 4 2 level 11 fact 18)
+f-20    (robot 4 2 1 lamp 5 4 2 level 12 fact 19)
+f-21    (robot 4 3 1 lamp 5 4 2 level 13 fact 20)
+f-22    (robot 3 3 1 lamp 5 4 2 level 14 fact 21)
+f-23    (robot 2 3 1 lamp 5 4 2 level 15 fact 22)
+f-24    (robot 2 3 3 lamp 5 4 2 level 16 fact 23)
+f-25    (robot 3 3 3 lamp 5 4 2 level 17 fact 24)
+f-26    (robot 4 3 3 lamp 5 4 2 level 18 fact 25)
+f-27    (robot 5 3 3 lamp 5 4 2 level 19 fact 26)
+f-28    (robot 5 4 3 lamp 5 4 2 level 20 fact 27)
+f-29    (robot 5 4 1 level 21 fact 28)
+For a total of 29 facts.
+CLIPS> 
