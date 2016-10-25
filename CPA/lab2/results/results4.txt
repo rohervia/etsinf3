@@ -1,0 +1,7 @@
+encaja-seq
+Time > 15.421737cmp Lenna.ppm binLenna1024.ppm
+nnencaja-par1
+Time > 0.735925cmp Lenna.ppm binLenna1024.ppm
+nnencaja-par2
+Time > 191.695598cmp Lenna.ppm binLenna1024.ppm
+n
