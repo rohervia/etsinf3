@@ -1,6 +1,6 @@
 public class Symptom {
-    private virtual ICollection<Speciality> specialities {get; set;}
-    private virtual ICollection<EmergencyCall> emergencyCalls {get; set;}
+    private virtual ICollection<Speciality> specialities {get;}
+    private virtual ICollection<EmergencyCall> emergencyCalls {get;}
 
     public int StageOfGravity;
     public int Duration;
@@ -18,4 +18,10 @@ public class Symptom {
         specialities = new List<Speciality>();
         emergencyCalls = new List<EmergencyCall>();
     }
+
+    public void addSpeciality(Speciality s);
+    public void removeSpeciality(Speciality s);
+
+    public void addEmergencyCall(EmergencyCall e);
+    public void removeEmergencyCall(EmergencyCall e);
 }

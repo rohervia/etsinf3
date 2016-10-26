@@ -1,7 +1,6 @@
 public class Hospital {
-    private virtual ICollection<HospitalBased> HospitalBasedAmbulances {get; set;}
-    private virtual ICollection<Deployment> Supports {get; set;}
-    private virtual ICollection<EmergecyCall> EmergencyCalls {get; set;}
+    private virtual ICollection<HospitalBased> HospitalBasedAmbulances {get;}
+    private virtual ICollection<Deployment> Supports {get;}
 
     public string Name;
     public string Address;
@@ -11,7 +10,6 @@ public class Hospital {
     public Hospital() {
         HospitalBasedAmbulances = new List<HospitalBased>();
         Supports = new List<Deployment>();
-        EmergencyCalls = new List<EmergencyCall>();
     }
 
     public Hospital(string Name, string Address, double Latitude, double Longitude, EmergencyCallService Service) {
@@ -22,7 +20,12 @@ public class Hospital {
         this.EmergencyCallService = Service;
         HospitalBasedAmbulances = new List<HospitalBased>();
         Supports = new List<Deployment>();
-        EmergencyCalls = new List<EmergencyCall>();
     }
+
+    public void addHospitalBased(HospitalBased h);
+    public void removeHospitalBased(HospitalBased h);
+
+    public void addDeployment(Deployment d);
+    public void removeDeployment(Deployment d);
 }
 

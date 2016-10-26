@@ -1,6 +1,6 @@
 public class Speciality {
-    private virtual ICollection<Symptom> Symptoms {get; set;}
-    private virtual ICollection<Deployment> Supports {get; set;}
+    private virtual ICollection<Symptom> Symptoms {get;}
+    private virtual ICollection<Deployment> Supports {get;}
 
     public string Name;
 
@@ -14,4 +14,10 @@ public class Speciality {
         Symptoms = new List<Symptom>();
         Supports = new List<Deployment>();
     }
+
+    public void addSymptom(Symptom s);
+    public void removeSymptom(Symptom s);
+
+    public void addDeployment(Deployment d);
+    public void removeDeployment(Deployment d);
 }
