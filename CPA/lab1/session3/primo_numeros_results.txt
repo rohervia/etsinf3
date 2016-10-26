@@ -1,2 +1,10 @@
 Entre el 1 y el 100000000 hay 5761456 numeros primos.
 Entre el 1 y el 100000000 hay 5761456 numeros primos.
+
+real	4m49.243s
+user	4m49.192s
+sys	0m0.002s
+
+real	0m17.269s
+user	6m58.694s
+sys	0m0.023s

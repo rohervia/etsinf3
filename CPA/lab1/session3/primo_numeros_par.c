@@ -26,6 +26,7 @@ int main()
   Entero_grande i, n;
 
   n = 2; /* Por el 1 y el 2 */
+  #pragma omp parallel for reduction(+:n)
   for (i = 3; i <= N; i += 2)
     if (primo(i)) n++;
 

@@ -3,7 +3,7 @@
 #PBS -q cpa
 #PBS -d .
 
-args="OMP_NUM_THREADS=32"
+make primo_grande
 
 time ./primo_grande_seq
-# time ./primo_grande_par
+time ./primo_grande_par

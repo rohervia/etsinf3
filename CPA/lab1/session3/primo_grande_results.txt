@@ -1,0 +1,16 @@
+gcc -Wall -fopenmp -lm -o primo_grande_seq primo_grande.c
+gcc -Wall -fopenmp -lm -o primo_grande_par primo_grande_par.c
+cc     primo_grande.c pg-seq pg-par   -o primo_grande
+El mayor primo que cabe en 8 bytes es 18446744073709551557.
+El mayor primo que cabe en 8 bytes es 18446744073709551557.
+cc: pg-seq: No existe el fichero o el directorio
+cc: pg-par: No existe el fichero o el directorio
+make: *** [primo_grande] Error 1
+
+real	0m55.593s
+user	0m55.578s
+sys	0m0.001s
+
+real	0m4.095s
+user	1m46.255s
+sys	0m0.022s

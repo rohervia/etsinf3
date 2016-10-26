@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <limits.h>
+#include <omp.h>
 
 typedef unsigned long long Entero_grande;
 #define ENTERO_MAS_GRANDE  ULLONG_MAX
@@ -14,9 +15,14 @@ int primo(Entero_grande n)
 
   if (p) {
     s = sqrt(n);
-    
-	for (i = 3; p && i <= s; i += 2)
-	  if (n % i == 0) p = 0;
+    i = 3; 
+	#pragma omp parallel private(i) shared(p)
+	{
+	  int nt = omp_get_num_threads();
+	  int idt = omp_get_thread_num();
+	  for (i = 3 + 2 * idt; p && i <= s; i += 2 * nt)
+	    if (n % i == 0) p = 0;
+	}
   }
 
   return p;
