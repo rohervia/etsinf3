@@ -28,6 +28,7 @@ public class Application {
 
         Ambulance ambulance = new HospitalBased(10931, "Muletas", 40, 0);
         hospital.addHospitalBased(ambulance);
+        ecs.addAmbulance(ambulance);
 
         EmergencyCall emergencyCall = new EmergencyCall(39.4, -0.5, new DateTime(), patient, ambulance, hospital, symptom);
         symptom.addEmergencyCall(emergencyCall);
