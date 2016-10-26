@@ -618,3 +618,50 @@ AND x.cod_act = a.cod_act
 AND p.duracion < 100
 GROUP BY p.cod_peli, p.titulo
 HAVING COUNT(DISTINCT a.cod_pais) = 1;
+
+
+-- QUERIES WITH DIFFERENT JOINS
+
+-- Exercise 50
+-- untested
+SELECT cod_pais, nombre, COUNT(cod_act)
+FROM cs_pais LEFT JOIN cs_actor USING (cod_pais)
+GROUP BY cod_pais, nombre
+ORDER BY nombre;
+
+-- Exercise 51
+-- untested
+SELECT cod_lib, titulo, COUNT(cod_peli)
+FROM cs_libro LEFT JOIN cs_pelicula USING (cod_lib)
+GROUP BY cod_lib, titulo;
+
+-- Exercise 52
+-- untested
+SELECT cod_pais, nombre, COUNT(cod_act)
+FROM (cs_pais LEFT JOIN cs_actor USING (cod_pais)) NATURAL JOIN cs_actua
+WHERE papel = 'Secundario'
+GROUP BY cod_pais, nombre
+ORDER BY nombre;
+
+-- Exercise 53
+-- untested
+SELECT cod_peli, titulo, COUNT(cod_gen) GEN, COUNT(cod_act)
+FROM (cs_pelicula NATURAL JOIN cs_clasificacion) NATURAL JOIN cs_actua
+WHERE duracion > 140
+GROUP BY cod_peli, titulo
+ORDER BY titulo;
+
+
+-- QUERIES WITH SET OPERATIONS
+
+-- Exercise 54
+-- not begun
+
+
+-- OTHER QUERIES
+
+-- Exercise 55
+-- not begun
+
+-- Exercise 56
+-- not begun
