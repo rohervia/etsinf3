@@ -1,6 +1,10 @@
 public class Hospital {
-    private virtual ICollection<HospitalBased> HospitalBasedAmbulances {get;}
-    private virtual ICollection<Deployment> Supports {get;}
+    private virtual ICollection<HospitalBased> HospitalBasedAmbulances {
+        get;
+    }
+    private virtual ICollection<Deployment> Supports {
+        get;
+    }
 
     public string Name;
     public string Address;
@@ -13,8 +17,8 @@ public class Hospital {
     }
 
     public Hospital(string Name, string Address,
-            double Latitude, double Longitude,
-            EmergencyCallService Service, Deployment deployment) : this() {
+                    double Latitude, double Longitude,
+                    EmergencyCallService Service, Deployment deployment) : this() {
         this.Name = Name;
         this.Address = Address;
         this.Longitude = Longitude;

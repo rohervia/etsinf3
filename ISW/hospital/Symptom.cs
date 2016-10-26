@@ -1,6 +1,10 @@
 public class Symptom {
-    private virtual ICollection<Speciality> specialities {get;}
-    private virtual ICollection<EmergencyCall> emergencyCalls {get;}
+    private virtual ICollection<Speciality> specialities {
+        get;
+    }
+    private virtual ICollection<EmergencyCall> emergencyCalls {
+        get;
+    }
 
     public int StageOfGravity;
     public int Duration;
@@ -12,7 +16,7 @@ public class Symptom {
     }
 
     public Symptom(int StageOfGravity, int Duration, string Description,
-            Speciality speciality, EmergencyCall emergencyCall) : this() {
+                   Speciality speciality, EmergencyCall emergencyCall) : this() {
         this.StageOfGravity = StageOfGravity;
         this.Duration = Duration;
         this.Description = Description;

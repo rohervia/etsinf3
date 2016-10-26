@@ -1,6 +1,10 @@
 public class Speciality {
-    private virtual ICollection<Symptom> Symptoms {get;}
-    private virtual ICollection<Deployment> Supports {get;}
+    private virtual ICollection<Symptom> Symptoms {
+        get;
+    }
+    private virtual ICollection<Deployment> Supports {
+        get;
+    }
 
     public string Name;
 
