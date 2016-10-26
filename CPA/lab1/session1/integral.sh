@@ -3,4 +3,6 @@
 #PBS -q cpa
 #PBS -d .
 
-OMP_NUM_THREADS=32 ./integral 2 1000000000
+./integral-seq 1 1000000000
+OMP_NUM_THREADS=32 ./integral-par 1 1000000000
+

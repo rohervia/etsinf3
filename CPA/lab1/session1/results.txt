@@ -1,0 +1,4 @@
+time: 57.220051
+Valor de la integral = 1.000000000000
+time: 3.292513
+Valor de la integral = 1.000000000000
