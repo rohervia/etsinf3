@@ -21,19 +21,21 @@ public class Main {
         symptom.StageOfGravity = 4;
         symptom.Duration = 5;
         symptom.Description = "Costillas rotas - Mafia";
+        symptom.Speciality = speciality;
+        speciality.addSymptom(symptom);
 
         Patient patient = new Patient(121241, "Carlos", "Galindo", true, 25, 643328918, "Calle Street");
 
         Ambulance ambulance = new HospitalBased(10931, "Muletas", 40, 0);
         hospital.addHospitalBased(ambulance);
 
-        EmergencyCall emergencyCall = new EmergencyCall(39.4, -0.5, new DateTime(), patient, ambulance);
+        EmergencyCall emergencyCall = new EmergencyCall(39.4, -0.5, new DateTime(), patient, ambulance, hospital, symptom);
         symptom.addEmergencyCall(emergencyCall);
         ambulance.addEmergencyCall(emergencyCall);
         hospital.addEmergencyCall(emergencyCall);
+        ecs.addEmergencyCall(emergencyCall);
 
-
-
+        PrivateAmbulance privateAmbulance = new PrivateAmbulance(1231513, "Mas muletas", 40, -20, "Company Inc.");
 
         return 0;
     }
