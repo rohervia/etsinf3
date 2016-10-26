@@ -559,8 +559,7 @@ AND COUNT(x.cod_act) > 0
 ORDER BY p.titulo;
 
 -- Exercise 44
--- not working properly
-SELECT p.cod_pais, p.nombre, COUNT(a.cod_act) CUANTOS
+SELECT p.cod_pais, p.nombre, COUNT(DISTINCT a.cod_act) CUANTOS
 FROM cs_pais p, cs_actor a, cs_actua x, cs_pelicula pe
 WHERE p.cod_pais = a.cod_pais
 AND a.cod_act = x.cod_act
@@ -574,17 +573,28 @@ ORDER BY p.nombre;
 -- Exercise 45
 SELECT g.cod_gen, g.nombre
 FROM cs_genero g, cs_clasificacion c
+WHERE g.cod_gen = c.cod_gen
 GROUP BY g.cod_gen, g.nombre
-HAVING MAX(c.cod_peli);
+HAVING COUNT(DISTINCT c.cod_peli) >= ALL (
+    SELECT COUNT(DISTINCT cod_peli)
+    FROM cs_clasificacion
+    GROUP BY cod_gen
+);
 
 -- Exercise 46
 SELECT l.cod_lib, l.titulo, l.autor
 FROM cs_libro l, cs_pelicula p
 WHERE l.cod_lib = p.cod_lib
 GROUP BY l.cod_lib, l.titulo, l.autor
-HAVING MAX(p.cod_peli);
+HAVING COUNT(p.cod_peli) >= ALL (
+    SELECT COUNT(cod_peli)
+    FROM cs_pelicula
+    WHERE cod_lib IS NOT NULL
+    GROUP BY cod_lib
+);
 
 -- Exercise 47
+-- not working
 SELECT p.cod_pais, p.nombre
 FROM cs_pais p, cs_actor a, cs_actua x, cs_pelicula pe
 WHERE p.cod_pais = a.cod_pais
@@ -595,16 +605,16 @@ HAVING MAX(DISTINCT a.cod_act)
 AND COUNT(x.cod_peli) = 2;
 
 -- Exercise 48
-SELECT EXTRACT(YEAR FROM fecha_nac), COUNT(cod_act)
+SELECT EXTRACT(YEAR FROM fecha_nac) AÑO, COUNT(cod_act) NUM_ACTORES
 FROM cs_actor
 GROUP BY EXTRACT(YEAR FROM fecha_nac)
 HAVING COUNT(cod_act) > 3;
 
 -- Exercise 49 - redo 36
--- unfinished
 SELECT p.cod_peli, p.titulo
 FROM cs_pelicula p, cs_actua x, cs_actor a
 WHERE p.cod_peli = x.cod_peli
 AND x.cod_act = a.cod_act
+AND p.duracion < 100
 GROUP BY p.cod_peli, p.titulo
-HAVING ALL(a.cod_pais) = a.cod_pais
+HAVING COUNT(DISTINCT a.cod_pais) = 1;
