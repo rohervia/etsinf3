@@ -371,7 +371,7 @@ WHERE NOT EXISTS (
     WHERE (fecha_nac < '01/01/1900' OR fecha_nac >= '01/01/2000')
     AND cs_actor.cod_pais = cs_pais.cod_pais
 ) AND EXISTS ( -- check if there is at least 1 actor from that place
-    SELECT * 
+    SELECT *
     FROM cs_actor
     WHERE cs_actor.cod_pais = cs_pais.cod_pais
 ) ORDER BY nombre;
@@ -554,7 +554,7 @@ FROM cs_pelicula p, cs_clasificacion c, cs_actua x
 WHERE p.cod_peli = c.cod_peli
 AND p.cod_peli = x.cod_peli
 GROUP BY p.cod_peli, p.titulo
-HAVING COUNT(DISTINCT c.cod_gen) = 1 -- why do I need here distinct?
+HAVING COUNT(DISTINCT c.cod_gen) = 1 -- why do I need here distinct? because multiple actors
 AND COUNT(x.cod_act) > 0
 ORDER BY p.titulo;
 
@@ -568,5 +568,43 @@ AND pe.cod_peli = x.cod_peli
 AND pe.anyo >= 1960
 AND pe.anyo <  1970
 GROUP BY p.cod_pais, p.nombre
-HAVING COUNT(a.cod_act) > 0
+HAVING COUNT(DISTINCT a.cod_act) > 0
 ORDER BY p.nombre;
+
+-- Exercise 45
+SELECT g.cod_gen, g.nombre
+FROM cs_genero g, cs_clasificacion c
+GROUP BY g.cod_gen, g.nombre
+HAVING MAX(c.cod_peli);
+
+-- Exercise 46
+SELECT l.cod_lib, l.titulo, l.autor
+FROM cs_libro l, cs_pelicula p
+WHERE l.cod_lib = p.cod_lib
+GROUP BY l.cod_lib, l.titulo, l.autor
+HAVING MAX(p.cod_peli);
+
+-- Exercise 47
+SELECT p.cod_pais, p.nombre
+FROM cs_pais p, cs_actor a, cs_actua x, cs_pelicula pe
+WHERE p.cod_pais = a.cod_pais
+AND a.cod_act = x.cod_act
+AND pe.cod_peli = x.cod_peli
+GROUP BY p.cod_pais, p.nombre
+HAVING MAX(DISTINCT a.cod_act)
+AND COUNT(x.cod_peli) = 2;
+
+-- Exercise 48
+SELECT EXTRACT(YEAR FROM fecha_nac), COUNT(cod_act)
+FROM cs_actor
+GROUP BY EXTRACT(YEAR FROM fecha_nac)
+HAVING COUNT(cod_act) > 3;
+
+-- Exercise 49 - redo 36
+-- unfinished
+SELECT p.cod_peli, p.titulo
+FROM cs_pelicula p, cs_actua x, cs_actor a
+WHERE p.cod_peli = x.cod_peli
+AND x.cod_act = a.cod_act
+GROUP BY p.cod_peli, p.titulo
+HAVING ALL(a.cod_pais) = a.cod_pais
