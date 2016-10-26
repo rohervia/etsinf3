@@ -1,4 +1,4 @@
-public class Main {
+public class Application {
     public static int Main(string[] args)
     {
         EmergencyCallService ecs = new EmergencyCallService();
