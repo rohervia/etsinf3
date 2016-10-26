@@ -12,14 +12,15 @@ public class Hospital {
         Supports = new List<Deployment>();
     }
 
-    public Hospital(string Name, string Address, double Latitude, double Longitude, EmergencyCallService Service) {
+    public Hospital(string Name, string Address,
+            double Latitude, double Longitude,
+            EmergencyCallService Service, Deployment deployment) : this() {
         this.Name = Name;
         this.Address = Address;
         this.Longitude = Longitude;
         this.Latitude = Latitude;
         this.EmergencyCallService = Service;
-        HospitalBasedAmbulances = new List<HospitalBased>();
-        Supports = new List<Deployment>();
+        addDeployment(deployment);
     }
 
     public void addHospitalBased(HospitalBased h);

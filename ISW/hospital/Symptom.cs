@@ -11,12 +11,13 @@ public class Symptom {
         emergencyCalls = new List<EmergencyCall>();
     }
 
-    public Symptom(int StageOfGravity, int Duration, string Description) {
+    public Symptom(int StageOfGravity, int Duration, string Description,
+            Speciality speciality, EmergencyCall emergencyCall) : this() {
         this.StageOfGravity = StageOfGravity;
         this.Duration = Duration;
         this.Description = Description;
-        specialities = new List<Speciality>();
-        emergencyCalls = new List<EmergencyCall>();
+        addSpeciality(speciality);
+        addEmergencyCall(emergencyCall);
     }
 
     public void addSpeciality(Speciality s);

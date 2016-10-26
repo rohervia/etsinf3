@@ -9,10 +9,9 @@ public class Speciality {
         Supports = new List<Deployment>();
     }
 
-    public Speciality (string Name) {
+    public Speciality (string Name, Deployment deployment) : this() {
         this.Name = Name;
-        Symptoms = new List<Symptom>();
-        Supports = new List<Deployment>();
+        addDeployment(deployment);
     }
 
     public void addSymptom(Symptom s);
