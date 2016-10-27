@@ -601,8 +601,12 @@ WHERE p.cod_pais = a.cod_pais
 AND a.cod_act = x.cod_act
 AND pe.cod_peli = x.cod_peli
 GROUP BY p.cod_pais, p.nombre
-HAVING MAX(DISTINCT a.cod_act)
-AND COUNT(x.cod_peli) = 2;
+HAVING COUNT(x.cod_peli) = 2
+AND COUNT(DISTINCT a.cod_act) >= ALL (
+    SELECT COUNT(x2.cod_act)
+    FROM cs_actua x2
+    WHERE x2.cod_act = x.cod_act
+);
 
 -- Exercise 48
 SELECT EXTRACT(YEAR FROM fecha_nac) AÑO, COUNT(cod_act) NUM_ACTORES
@@ -623,30 +627,32 @@ HAVING COUNT(DISTINCT a.cod_pais) = 1;
 -- QUERIES WITH DIFFERENT JOINS
 
 -- Exercise 50
--- untested
-SELECT cod_pais, nombre, COUNT(cod_act)
+SELECT cod_pais, cs_pais.nombre, COUNT(cod_act)
 FROM cs_pais LEFT JOIN cs_actor USING (cod_pais)
-GROUP BY cod_pais, nombre
+GROUP BY cod_pais, cs_pais.nombre
 ORDER BY nombre;
 
 -- Exercise 51
--- untested
-SELECT cod_lib, titulo, COUNT(cod_peli)
-FROM cs_libro LEFT JOIN cs_pelicula USING (cod_lib)
-GROUP BY cod_lib, titulo;
+SELECT cod_lib, l.titulo, COUNT(cod_peli)
+FROM cs_libro l LEFT JOIN cs_pelicula USING (cod_lib)
+WHERE l.anyo > 1980
+GROUP BY cod_lib, l.titulo;
 
 -- Exercise 52
--- untested
-SELECT cod_pais, nombre, COUNT(cod_act)
-FROM (cs_pais LEFT JOIN cs_actor USING (cod_pais)) NATURAL JOIN cs_actua
-WHERE papel = 'Secundario'
-GROUP BY cod_pais, nombre
-ORDER BY nombre;
+SELECT cod_pais, p.nombre, COUNT(DISTINCT a1.cod_act) ACT
+FROM cs_pais p 
+  LEFT JOIN (cs_actor a1 
+    JOIN cs_actua a2 
+    ON papel = 'Secundario' -- if this is on where, all 0s get removed
+    AND a1.cod_act=a2.cod_act) 
+  USING (cod_pais)
+GROUP BY cod_pais, p.nombre
+ORDER BY p.nombre;
 
 -- Exercise 53
--- untested
-SELECT cod_peli, titulo, COUNT(cod_gen) GEN, COUNT(cod_act)
-FROM (cs_pelicula NATURAL JOIN cs_clasificacion) NATURAL JOIN cs_actua
+SELECT cod_peli, titulo, COUNT(DISTINCT cod_gen) GEN, COUNT(DISTINCT cod_act)
+FROM (cs_pelicula LEFT JOIN cs_clasificacion USING (cod_peli))
+    LEFT JOIN cs_actua USING (cod_peli)
 WHERE duracion > 140
 GROUP BY cod_peli, titulo
 ORDER BY titulo;
