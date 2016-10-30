@@ -21,8 +21,7 @@ WHERE nombre LIKE '%John%';
 SELECT cod_peli, titulo
 FROM cs_pelicula
 WHERE duracion > 120
-AND anyo >= 1980
-AND anyo < 1990;
+AND anyo BETWEEN 1980 AND 1989;
 
 -- Exercise 5
 SELECT cod_peli, titulo
@@ -34,8 +33,7 @@ AND cod_lib IS NOT NULL;
 SELECT COUNT(*)
 FROM cs_pelicula
 WHERE duracion > 120
-AND anyo >= 1980
-AND anyo < 1990;
+AND anyo BETWEEN 1980 AND 1989;
 
 -- Exercise 7
 SELECT COUNT(DISTINCT cod_peli) CUÁNTAS_PELIS
