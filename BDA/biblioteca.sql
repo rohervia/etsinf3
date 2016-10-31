@@ -131,7 +131,6 @@ WHERE autor_id NOT IN (
 );
 
 -- Exercise 16
--- untested
 SELECT nombre
 FROM autor
 WHERE autor_id NOT IN (
@@ -140,7 +139,6 @@ WHERE autor_id NOT IN (
 );
 
 -- Exercise 17
--- untested
 SELECT nombre
 FROM autor
 WHERE nacionalidad = 'Española'
@@ -151,7 +149,6 @@ AND 2 <= (
 );
 
 -- Exercise 18
--- untested
 SELECT nombre
 FROM autor
 WHERE nacionalidad = 'Española'
@@ -166,12 +163,11 @@ AND autor_id IN (
 );
 
 -- Exercise 19
--- untested
 SELECT titulo, cod_ob
 FROM obra
 WHERE 1 < (
     SELECT COUNT(autor_id)
-    FROM escribe
+    FROM escribir
     WHERE obra.cod_ob = cod_ob
 );
 
@@ -204,7 +200,7 @@ WHERE NOT EXISTS (
 );
 
 -- Exercise 21
--- untested
+-- untested ?
 SELECT nombre
 FROM amigo
 WHERE NOT EXISTS (
@@ -387,14 +383,13 @@ WHERE num IN (
     FROM leer, escribir
     WHERE amigo.num <> num
     AND leer.cod_ob = escribir.cod_ob
-    AND escribir.cod_autor = autor.cod_autor
+    AND escribir.autor_id = autor.autor_id
 );
 
 
 -- QUERIES WITH GROUP BY
 
 -- Exercise 29
--- untested
 SELECT id_lib, titulo
 FROM libro LEFT JOIN esta_en USING (id_lib)
 WHERE titulo IS NOT NULL
@@ -402,7 +397,6 @@ GROUP BY id_lib, titulo
 HAVING COUNT(cod_ob) > 1;
 
 -- Exercise 30
--- untested
 SELECT nombre, COUNT(DISTINCT cod_ob)
 FROM amigo, leer
 WHERE amigo.num = leer.num
@@ -410,20 +404,20 @@ GROUP BY amigo.num, nombre
 HAVING COUNT(DISTINCT cod_ob) > 3;
 
 -- Exercise 31
--- untested
 SELECT tematica, COUNT(cod_ob)
 FROM obra
+WHERE tematica IS NOT NULL
 GROUP BY tematica
-HAVING COUNT(cod_ob) > 0;
+HAVING COUNT(cod_ob) > 0
+ORDER BY tematica;
 
 -- Exercise 32
--- untested
 SELECT tematica, COUNT(cod_ob)
-FROM obra
-GROUP BY tematica;
+FROM tema LEFT JOIN obra USING (tematica)
+GROUP BY tematica
+ORDER BY tematica;
 
 -- Exercise 33
--- untested
 SELECT nombre
 FROM autor LEFT JOIN escribir USING (autor_id)
 GROUP BY autor_id, nombre
@@ -434,7 +428,6 @@ HAVING COUNT(cod_ob) >= ALL (
 );
 
 -- Exercise 34
--- untested
 SELECT nacionalidad
 FROM autor
 GROUP BY nacionalidad
@@ -445,7 +438,6 @@ HAVING COUNT(autor_id) <= ALL (
 );
 
 -- Exercise 35
--- untested
 SELECT nombre
 FROM amigo LEFT JOIN leer USING (num)
 GROUP BY num, nombre
@@ -459,14 +451,12 @@ HAVING COUNT(cod_ob) >= ALL (
 -- OTHER QUERIES
 
 -- Exercise 36
--- untested
 SELECT id_lib, titulo
 FROM libro
 WHERE titulo IS NOT NULL
 AND num_obras = 1;
 
 -- Exercise 37
--- untested
 SELECT titulo
 FROM libro
 WHERE titulo IS NOT NULL
@@ -480,8 +470,7 @@ WHERE id_lib IN (
 );
 
 -- Exercise 38
--- untested
-SELECT nombre
+SELECT DISTINCT nombre
 FROM amigo LEFT JOIN leer USING (num)
 WHERE cod_ob IN (
     SELECT cod_ob
@@ -490,7 +479,6 @@ WHERE cod_ob IN (
 );
 
 -- Exercise 39
--- untested
 SELECT nombre
 FROM amigo
 WHERE num NOT IN (
@@ -500,7 +488,6 @@ WHERE num NOT IN (
 );
 
 -- Exercise 40
--- untested
 SELECT nombre
 FROM amigo
 WHERE num NOT IN (
@@ -509,8 +496,7 @@ WHERE num NOT IN (
     WHERE autor_id = 'CAMA'
 ) AND num IN (
     SELECT num
-    FROM leer LEFT JOIN escribir USING (cod_ob)
-    WHERE autor_id <> 'CAMA'
+    FROM leer
 );
 
 -- Exercise 41

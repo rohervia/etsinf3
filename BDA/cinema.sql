@@ -592,7 +592,7 @@ HAVING COUNT(p.cod_peli) >= ALL (
 );
 
 -- Exercise 47
--- not working
+-- untested
 SELECT p.cod_pais, p.nombre
 FROM cs_pais p, cs_actor a, cs_actua x, cs_pelicula pe
 WHERE p.cod_pais = a.cod_pais
@@ -659,13 +659,41 @@ ORDER BY titulo;
 -- QUERIES WITH SET OPERATIONS
 
 -- Exercise 54
--- not begun
-
+-- untested - set operations?
+SELECT anyo
+FROM cs_libro
+WHERE anyo IS NOT NULL
+AND anyo NOT LIKE '%9%'
+  UNION
+SELECT anyo
+FROM cs_pelicula
+WHERE anyo IS NOT NULL
+AND anyo NOT LIKE '%9%';
 
 -- OTHER QUERIES
 
 -- Exercise 55
--- not begun
+SELECT cod_gen, nombre
+FROM cs_genero LEFT JOIN cs_clasificacion USING (cod_gen)
+WHERE cod_peli IN (
+    SELECT cod_peli
+    FROM cs_pelicula
+    WHERE duracion = (
+        SELECT MAX(duracion)
+        FROM cs_pelicula
+    )
+);
 
 -- Exercise 56
--- not begun
+-- untested missing 0 values
+SELECT cod_act, nombre, fecha_nac, COUNT(cod_peli)
+FROM cs_actor LEFT JOIN cs_actua USING (cod_act)
+WHERE fecha_nac < '01/01/1948'
+AND cod_act IN (
+    SELECT cod_act
+    FROM cs_actua
+    GROUP BY cod_act
+    HAVING COUNT(DISTINCT cod_peli) >= 2
+) AND papel = 'Principal'
+GROUP BY cod_act, nombre, fecha_nac
+ORDER BY nombre;

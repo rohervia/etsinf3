@@ -1,51 +1,42 @@
 -- QUERIES USING 1 RELATION
 
 -- Exercise 1
--- untested
-SELECT cod, tipo, color, premio
+SELECT codigo, tipo, color, premio
 FROM maillot;
 
 -- Exercise 2
--- untested
 SELECT dorsal, nombre
 FROM ciclista
 WHERE edad <= 25;
 
 -- Exercise 3
--- untested
 SELECT nompuerto, altura
 FROM puerto
 WHERE categoria = 'E';
 
 -- Exercise 4
--- untested
 SELECT netapa
 FROM etapa
 WHERE salida = llegada;
 
 -- Exercise 5
--- untested
 SELECT COUNT(*)
 FROM ciclista;
 
 -- Exercise 6
--- untested
 SELECT COUNT(*)
 FROM ciclista
 WHERE edad > 25;
 
 -- Exercise 7
--- untested
 SELECT COUNT(*)
 FROM equipo;
 
 -- Exercise 8
--- untested
 SELECT AVG(edad)
 FROM ciclista;
 
 -- Exercise 9
--- untested
 SELECT MIN(altura), MAX(altura)
 FROM puerto;
 
@@ -53,43 +44,39 @@ FROM puerto;
 -- QUERIES USING MORE THAN 1 RELATION
 
 -- Exercise 10
--- untested
 SELECT nompuerto, categoria C
 FROM puerto, ciclista
 WHERE puerto.dorsal = ciclista.dorsal
 AND nomeq = 'Banesto';
 
 -- Exercise 11
--- untested
 SELECT nompuerto, puerto.netapa, km
 FROM puerto, etapa
 WHERE puerto.netapa = etapa.netapa;
 
 -- Exercise 12
--- untested
-SELECT equipo.nomeq, director
+SELECT DISTINCT equipo.nomeq, director
 FROM equipo, ciclista
 WHERE equipo.nomeq = ciclista.nomeq
 AND edad > 33;
 
 -- Exercise 13
--- untested
-SELECT nombre, color
+SELECT DISTINCT nombre, color
 FROM ciclista c, llevar l, maillot m
 WHERE c.dorsal = l.dorsal
-AND l.codigo = m.codigo;
+AND l.codigo = m.codigo
+ORDER BY nombre;
 
 -- Exercise 14
--- untested
-SELECT nombre, netapa
+SELECT DISTINCT c.nombre, e.netapa
 FROM etapa e, ciclista c, llevar l, maillot m
 WHERE e.dorsal = c.dorsal
 AND c.dorsal = l.dorsal
 AND l.codigo = m.codigo
-AND color = 'Amarillo';
+AND color = 'Amarillo'
+ORDER BY c.nombre;
 
 -- Exercise 15
--- untested
 SELECT e.netapa
 FROM etapa e, etapa e2
 WHERE e2.netapa = e.netapa - 1
@@ -99,7 +86,6 @@ AND e2.llegada <> e.salida;
 -- QUERIES WITH SUBQUERIES
 
 -- Exercise 16
--- untested
 SELECT netapa, salida
 FROM etapa
 WHERE netapa NOT IN (
@@ -108,7 +94,6 @@ WHERE netapa NOT IN (
 );
 
 -- Exercise 17
--- untested
 SELECT AVG(edad)
 FROM ciclista
 WHERE dorsal IN (
@@ -117,7 +102,6 @@ WHERE dorsal IN (
 );
 
 -- Exercise 18
--- untested
 SELECT nompuerto
 FROM puerto
 WHERE altura > (
@@ -126,7 +110,6 @@ WHERE altura > (
 );
 
 -- Exercise 19
--- untested
 SELECT salida, llegada
 FROM etapa
 WHERE netapa IN (
@@ -139,7 +122,6 @@ WHERE netapa IN (
 );
 
 -- Exercise 20
--- untested
 SELECT dorsal, nombre
 FROM ciclista
 WHERE dorsal IN (
@@ -152,7 +134,6 @@ WHERE dorsal IN (
 );
 
 -- Exercise 21
--- untested
 SELECT nombre
 FROM ciclista
 WHERE edad = (
@@ -161,16 +142,18 @@ WHERE edad = (
 );
 
 -- Exercise 22
--- untested
 SELECT nombre
-FROM ciclista c
+FROM ciclista
 WHERE dorsal IN (
     SELECT dorsal
     FROM etapa
 ) AND edad = (
     SELECT MIN(edad)
     FROM ciclista
-    WHERE c.dorsal = dorsal
+    WHERE dorsal IN (
+        SELECT dorsal
+        FROM etapa
+    )
 );
 
 -- Exercise 23
@@ -186,15 +169,18 @@ WHERE 1 < (
 -- QUERIES WITH UNIVERSAL QUANTIFICATION
 
 -- Exercise 24
--- untested
-SELECT netapa
+SELECT DISTINCT netapa
 FROM etapa
 WHERE NOT EXISTS (
     SELECT *
     FROM puerto
     WHERE etapa.netapa = netapa
     AND altura <= 700
-);
+) AND EXISTS (
+    SELECT *
+    FROM puerto
+    WHERE etapa.netapa = netapa
+) ORDER BY netapa;
 
 -- Exercise 25
 -- untested
