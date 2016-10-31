@@ -175,52 +175,42 @@ WHERE 1 < (
 -- QUERIES WITH UNIVERSAL QUANTIFICATION
 
 -- Exercise 20
--- given a friend, there is no work by RUKI they haven't read
--- untested
 SELECT nombre
 FROM amigo
 WHERE NOT EXISTS (
     SELECT *
-    FROM leer
-    WHERE amigo.num = num
+    FROM escribir
+    WHERE autor_id = 'RUKI'
     AND cod_ob NOT IN (
         SELECT cod_ob
-        FROM escribir
-        WHERE autor_id = 'RUKI'
+        FROM leer
+        WHERE num = amigo.num
     )
 ) AND EXISTS (
     SELECT *
-    FROM leer
-    WHERE amigo.num = num
-    AND cod_ob IN (
-        SELECT cod_ob
-        FROM escribir
-        WHERE autor_id = 'RUKI'
-    )
+    FROM escribir NATURAL JOIN leer
+    WHERE autor_id = 'RUKI'
+    AND num = amigo.num
 );
 
+
 -- Exercise 21
--- untested ?
 SELECT nombre
 FROM amigo
 WHERE NOT EXISTS (
     SELECT *
-    FROM leer
-    WHERE amigo.num = num
+    FROM escribir
+    WHERE autor_id = 'GUAP'
     AND cod_ob NOT IN (
         SELECT cod_ob
-        FROM escribir
-        WHERE autor_id = 'GUAP'
+        FROM leer
+        WHERE num = amigo.num
     )
 ) AND EXISTS (
     SELECT *
-    FROM leer
-    WHERE amigo.num = num
-    AND cod_ob IN (
-        SELECT cod_ob
-        FROM escribir
-        WHERE autor_id = 'GUAP'
-    )
+    FROM escribir NATURAL JOIN leer
+    WHERE autor_id = 'GUAP'
+    AND num = amigo.num
 );
 
 -- Exercise 22
