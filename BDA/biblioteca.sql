@@ -400,3 +400,119 @@ FROM libro LEFT JOIN esta_en USING (id_lib)
 WHERE titulo IS NOT NULL
 GROUP BY id_lib, titulo
 HAVING COUNT(cod_ob) > 1;
+
+-- Exercise 30
+-- untested
+SELECT nombre, COUNT(DISTINCT cod_ob)
+FROM amigo, leer
+WHERE amigo.num = leer.num
+GROUP BY amigo.num, nombre
+HAVING COUNT(DISTINCT cod_ob) > 3;
+
+-- Exercise 31
+-- untested
+SELECT tematica, COUNT(cod_ob)
+FROM obra
+GROUP BY tematica
+HAVING COUNT(cod_ob) > 0;
+
+-- Exercise 32
+-- untested
+SELECT tematica, COUNT(cod_ob)
+FROM obra
+GROUP BY tematica;
+
+-- Exercise 33
+-- untested
+SELECT nombre
+FROM autor LEFT JOIN escribir USING (autor_id)
+GROUP BY autor_id, nombre
+HAVING COUNT(cod_ob) >= ALL (
+    SELECT COUNT(cod_ob)
+    FROM escribir
+    GROUP BY autor_id
+);
+
+-- Exercise 34
+-- untested
+SELECT nacionalidad
+FROM autor
+GROUP BY nacionalidad
+HAVING COUNT(autor_id) <= ALL (
+    SELECT COUNT(autor_id)
+    FROM autor
+    GROUP BY nacionalidad
+);
+
+-- Exercise 35
+-- untested
+SELECT nombre
+FROM amigo LEFT JOIN leer USING (num)
+GROUP BY num, nombre
+HAVING COUNT(cod_ob) >= ALL (
+    SELECT COUNT(cod_ob)
+    FROM leer
+    GROUP BY num
+);
+
+
+-- OTHER QUERIES
+
+-- Exercise 36
+-- untested
+SELECT id_lib, titulo
+FROM libro
+WHERE titulo IS NOT NULL
+AND num_obras = 1;
+
+-- Exercise 37
+-- untested
+SELECT titulo
+FROM libro
+WHERE titulo IS NOT NULL
+    UNION
+SELECT titulo
+FROM obra LEFT JOIN esta_en USING (cod_ob)
+WHERE id_lib IN (
+    SELECT id_lib
+    FROM libro
+    WHERE num_obras = 1
+);
+
+-- Exercise 38
+-- untested
+SELECT nombre
+FROM amigo LEFT JOIN leer USING (num)
+WHERE cod_ob IN (
+    SELECT cod_ob
+    FROM escribir
+    WHERE autor_id = 'CAMA'
+);
+
+-- Exercise 39
+-- untested
+SELECT nombre
+FROM amigo
+WHERE num NOT IN (
+    SELECT num
+    FROM leer LEFT JOIN escribir USING (cod_ob)
+    WHERE autor_id = 'CAMA'
+);
+
+-- Exercise 40
+-- untested
+SELECT nombre
+FROM amigo
+WHERE num NOT IN (
+    SELECT num
+    FROM leer LEFT JOIN escribir USING (cod_ob)
+    WHERE autor_id = 'CAMA'
+) AND num IN (
+    SELECT num
+    FROM leer LEFT JOIN escribir USING (cod_ob)
+    WHERE autor_id <> 'CAMA'
+);
+
+-- Exercise 41
+-- untested
+-- which friend has read the most works (don't GROUP BY)
