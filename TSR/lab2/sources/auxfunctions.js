@@ -8,7 +8,7 @@ module.exports = {
 			().resolve(reply);
 		});
 		reqsock.on('error', function(reason) {
-			
+
 		});
 		return function (message) {
 			return new Promise(function (resolve, reject) {
@@ -20,14 +20,14 @@ module.exports = {
 
 	// *** getLoad function
 	getLoad	: function() {
-		var fs     = require('fs') 
-		, data   = fs.readFileSync("/proc/loadavg") // version sincrona 
+		var fs     = require('fs')
+		, data   = fs.readFileSync("/proc/loadavg") // version sincrona
 		, tokens = data.toString().split(' ')
 		, min1   = parseFloat(tokens[0])+0.01
 		, min5   = parseFloat(tokens[1])+0.01
-		, min15  = parseFloat(tokens[2])+0.01      
+		, min15  = parseFloat(tokens[2])+0.01
 		, m      = min1*10 + min5*2 + min15;
-		return m; 
+		return m;
 	},
 
 	// *** randNumber function
@@ -43,7 +43,7 @@ module.exports = {
 
 	// *** showArguments function
 	showArguments: function(a) {
-		for (var k in a) 
+		for (var k in a)
 		   console.log('\tPart', k, ':', a[k].toString());
 	}
-} 
+}
