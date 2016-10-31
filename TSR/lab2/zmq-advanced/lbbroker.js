@@ -4,7 +4,7 @@ var backend  = zmq.socket('router');
 
 var workers = {};
 
-if (process.argv.length < 4) {
+if (process.argv.length < 4 || process.argv.length > 5) {
     console.log('Usage: node lbbroker port1 port2 [-v]');
     process.exit(-1);
 }
@@ -26,15 +26,21 @@ frontend.on('message', function() {
     args.unshift('');
     var sent = false;
     while (!sent) {
+        var minServed = Number.MAX_VALUE;
+        var minId = undefined;
         for (w in workers) {
-            if (workers[w]) {
-                args.unshift(w);
-                backend.send(args);
-                workers[w] = false;
-                sent = true;
-                if (verbose) console.log('Sent to ', w, ' message: ', args);
-                break;
+            if (workers[w].ready && workers[w].served < minServed) {
+                minServed = workers[w].served;
+                minId = w;
             }
+        }
+        if (minId != undefined) {
+            args.unshift(minId);
+            backend.send(args);
+            workers[minId].ready = false;
+            workers[minId].served++;
+            sent = true;
+            if (verbose) console.log('Sent to ', minId, ' message: ', args);
         }
     }
 });
@@ -44,14 +50,14 @@ backend.on('message', function() {
     if (args.length == 3) {
         // Activation message
         if (workers[args[0]] == undefined) {
-            workers[args[0]] = true;
+            workers[args[0]] = {'ready':true, 'served':0};
             if (verbose) console.log('Worker registered with id: ' + args[0]);
         } else {
             if (verbose) console.log('This worker was already registered as (' + args[0] + ' - ' + workers[args[0]] + ')');
         }
     } else {
         if (verbose) console.log('Response from worker ' + args[0]);
-        workers[args[0]] = true;
+        workers[args[0]].ready = true;
         args.splice(0,2);
         frontend.send(args);
     }
