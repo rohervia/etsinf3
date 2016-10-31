@@ -183,7 +183,6 @@ WHERE NOT EXISTS (
 ) ORDER BY netapa;
 
 -- Exercise 25
--- untested
 SELECT nomeq, director
 FROM equipo
 WHERE NOT EXISTS (
@@ -191,10 +190,13 @@ WHERE NOT EXISTS (
     FROM ciclista
     WHERE nomeq = equipo.nomeq
     AND edad <= 25
-);
+) AND EXISTS (
+    SELECT * 
+    FROM ciclista
+    WHERE nomeq = equipo.nomeq
+) ORDER BY nomeq;
 
 -- Exercise 26
--- untested
 SELECT dorsal, nombre
 FROM ciclista
 WHERE NOT EXISTS (
@@ -202,11 +204,14 @@ WHERE NOT EXISTS (
     FROM etapa
     WHERE dorsal = ciclista.dorsal
     AND km <= 170
-);
+) AND EXISTS (
+    SELECT *
+    FROM etapa
+    WHERE dorsal = ciclista.dorsal
+) ORDER BY dorsal;
 
 
 -- Exercise 27
--- untested
 SELECT nombre
 FROM ciclista
 WHERE dorsal IN (
@@ -217,11 +222,14 @@ WHERE dorsal IN (
         FROM puerto
         WHERE netapa = etapa.netapa
         AND dorsal <> ciclista.dorsal
+    ) AND EXISTS (
+        SELECT *
+        FROM puerto
+        WHERE netapa = etapa.netapa
     )
 );
 
 -- Exercise 28
--- untested
 SELECT nomeq
 FROM equipo
 WHERE NOT EXISTS (
@@ -233,11 +241,14 @@ WHERE NOT EXISTS (
     ) AND dorsal NOT IN (
         SELECT dorsal
         FROM puerto
-    )
+    ) AND equipo.nomeq = ciclista.nomeq
+) AND EXISTS (
+    SELECT *
+    FROM ciclista
+    WHERE equipo.NOMEQ = ciclista.NOMEQ
 );
 
 -- Exercise 29
--- untested
 SELECT codigo, color
 FROM maillot
 WHERE codigo IN (
@@ -269,7 +280,15 @@ WHERE NOT EXISTS (
     AND dorsal IN (
         SELECT dorsal
         FROM puerto
-        WHERE categoria <> 1
+        WHERE categoria <> '1'
+    )
+) AND EXISTS (
+    SELECT * 
+    FROM ciclista
+    WHERE nomeq = equipo.nomeq
+    AND dorsal IN (
+        SELECT dorsal
+        FROM puerto
     )
 );
 
@@ -277,10 +296,84 @@ WHERE NOT EXISTS (
 -- QUERIES WITH GROUP BY
 
 -- Exercise 31
--- untested
+SELECT netapa, COUNT(nompuerto) num_puertos
+FROM etapa JOIN puerto USING (netapa)
+GROUP BY netapa
+ORDER BY netapa;
+
+-- Exercise 32
+SELECT nomeq, COUNT(dorsal) ciclistas
+FROM ciclista
+GROUP BY nomeq
+ORDER BY nomeq;
+
+-- Exercise 33
+SELECT nomeq, COUNT(dorsal) ciclistas
+FROM equipo NATURAL LEFT JOIN ciclista
+GROUP BY nomeq;
+
+-- Exercise 34
+SELECT director, nomeq
+FROM equipo NATURAL LEFT JOIN ciclista
+GROUP BY nomeq, director
+HAVING COUNT(dorsal) > 3
+AND AVG(edad) <= 30
+ORDER BY director;
+
+-- Exercise 35
+SELECT DISTINCT nombre, COUNT(netapa)
+FROM (ciclista NATURAL JOIN etapa) JOIN equipo ON (equipo.NOMEQ = ciclista.NOMEQ)
+WHERE 5 < (
+    SELECT COUNT(dorsal)
+    FROM ciclista
+    WHERE nomeq = equipo.nomeq
+) GROUP BY nombre
+ORDER BY nombre;
+
+-- Exercise 36
+SELECT nomeq, AVG(edad)
+FROM ciclista
+GROUP BY nomeq
+HAVING AVG(edad) >= ALL (
+    SELECT AVG(edad)
+    FROM ciclista
+    GROUP BY nomeq
+);
+
+-- Exercise 37
+SELECT director
+FROM equipo NATURAL JOIN ciclista NATURAL JOIN llevar
+GROUP BY director
+HAVING COUNT(codigo) >= ALL (
+    SELECT COUNT(codigo)
+    FROM equipo NATURAL JOIN ciclista NATURAL JOIN llevar
+    GROUP BY director
+);
 
 
 -- OTHER QUERIES
+
+-- Exercise 38
+SELECT codigo, color
+FROM maillot
+WHERE codigo IN (
+    SELECT codigo
+    FROM llevar
+    WHERE dorsal NOT IN (
+        SELECT dorsal
+        FROM etapa
+    )
+);
+
+-- Exercise 39
+SELECT netapa, salida, llegada
+FROM etapa
+WHERE km > 190
+AND 2 <= (
+    SELECT COUNT(nompuerto)
+    FROM puerto
+    WHERE netapa = etapa.netapa
+);
 
 -- Exercise 40
 SELECT dorsal, nombre
@@ -295,3 +388,48 @@ WHERE EXISTS (
         WHERE ciclista.dorsal = dorsal
     )
 );
+
+-- Exercise 41
+SELECT dorsal, nombre
+FROM ciclista
+WHERE dorsal IN (
+    SELECT dorsal
+    FROM llevar
+    WHERE codigo IN (
+        SELECT codigo
+        FROM llevar
+        WHERE dorsal = 20
+    )
+) AND dorsal <> 20
+ORDER BY dorsal;
+
+-- Exercise 42
+SELECT dorsal, nombre
+FROM ciclista
+WHERE dorsal NOT IN (
+    SELECT dorsal
+    FROM llevar
+    WHERE codigo IN (
+        SELECT codigo
+        FROM llevar
+        WHERE dorsal = 20
+    )
+);
+
+-- Exercise 43
+-- ciclista que ha ganado todos los maillots que ha ganado el 20
+-- ciclista al que no le falta ningun maillot ganado por el 20
+-- untested
+
+-- Exercise 44
+-- ciclista que solo ha ganado los maillots que el 20 ha ganado
+-- untested
+
+-- Exercise 45
+-- untested
+
+-- Exercise 46
+-- untested
+
+-- Exercise 47
+-- untested
