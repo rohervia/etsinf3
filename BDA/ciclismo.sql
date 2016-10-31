@@ -270,7 +270,6 @@ WHERE codigo IN (
 );
 
 -- Exercise 30
--- untested
 SELECT nomeq
 FROM equipo
 WHERE NOT EXISTS (
@@ -419,17 +418,77 @@ WHERE dorsal NOT IN (
 -- Exercise 43
 -- ciclista que ha ganado todos los maillots que ha ganado el 20
 -- ciclista al que no le falta ningun maillot ganado por el 20
--- untested
+SELECT dorsal, nombre
+FROM ciclista
+WHERE NOT EXISTS (
+    SELECT *
+    FROM llevar
+    WHERE dorsal = 20
+    AND codigo NOT IN (
+        SELECT codigo
+        FROM llevar
+        WHERE dorsal = ciclista.dorsal   
+    )   
+) AND dorsal <> 20;
 
 -- Exercise 44
 -- ciclista que solo ha ganado los maillots que el 20 ha ganado
--- untested
+-- ciclista que ha ganado todos los tipos de maillot que el 20
+-- ciclista que no ha ganado ningun maillot que 20 no ha ganado
+SELECT dorsal, nombre
+FROM ciclista
+WHERE NOT EXISTS ( -- he's won all those that 20 has
+    SELECT *
+    FROM llevar
+    WHERE dorsal = 20
+    AND codigo NOT IN (
+        SELECT codigo
+        FROM llevar
+        WHERE dorsal = ciclista.dorsal
+    )
+) AND dorsal <> 20
+AND NOT EXISTS ( -- he hasn't won any that 20 hasn't
+    SELECT *
+    FROM llevar
+    WHERE dorsal = ciclista.dorsal
+    AND codigo NOT IN (
+        SELECT codigo
+        FROM llevar
+        WHERE dorsal = 20
+    )
+);
 
 -- Exercise 45
--- untested
+-- ciclista que ha ganado un maillot en etapas con SUM(km) > ANY other
+SELECT ciclista.dorsal, nombre, color
+FROM ciclista, llevar, etapa, maillot
+WHERE etapa.netapa = llevar.netapa
+AND ciclista.dorsal = llevar.dorsal
+AND llevar.codigo = maillot.codigo
+GROUP BY ciclista.dorsal, nombre, color
+HAVING SUM(km) >= ALL (
+    SELECT SUM(km)
+    FROM ciclista, llevar, etapa, maillot
+    WHERE etapa.netapa = llevar.netapa
+    AND llevar.codigo = maillot.codigo
+    AND ciclista.dorsal = llevar.dorsal
+    GROUP BY ciclista.dorsal, nombre, color
+);
 
 -- Exercise 46
--- untested
+SELECT dorsal, nombre
+FROM ciclista NATURAL JOIN llevar
+GROUP BY dorsal, nombre
+HAVING COUNT(DISTINCT codigo) + 3 = (
+    SELECT COUNT(DISTINCT codigo)
+    FROM llevar
+    WHERE dorsal = 1
+) ORDER BY nombre;
+
+SELECT *
+FROM maillot;
 
 -- Exercise 47
--- untested
+SELECT DISTINCT netapa, km
+FROM etapa JOIN puerto USING (netapa)
+ORDER BY netapa;
