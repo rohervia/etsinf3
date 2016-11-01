@@ -214,73 +214,69 @@ WHERE NOT EXISTS (
 );
 
 -- Exercise 22
--- untested
-SELECT nombre
-FROM amigo
-WHERE NOT EXISTS (
+-- list friends that have read all books by an author
+-- list friends that haven't not read a book by an author
+SELECT DISTINCT nombre
+FROM amigo, leer, escribir e1
+WHERE amigo.num = leer.num
+AND leer.cod_ob = e1.cod_ob
+AND NOT EXISTS (
     SELECT *
-    FROM leer
-    WHERE amigo.num = num
+    FROM escribir
+    WHERE autor_id = e1.autor_id
     AND cod_ob NOT IN (
         SELECT cod_ob
-        FROM escribir e1
-    )
-) AND EXISTS (
-    SELECT *
-    FROM leer
-    WHERE amigo.num = num
-    AND cod_ob IN (
-        SELECT cod_ob
-        FROM escribir
-        WHERE autor_id = e1.autor_id
+        FROM leer
+        WHERE num = amigo.num
     )
 );
 
 -- Exercise 23
--- untested
-SELECT amigo.nombre, autor.nombre
-FROM amigo, autor
+SELECT DISTINCT amigo.nombre, autor.nombre
+FROM amigo 
+    JOIN leer 
+    ON (amigo.num = leer.num)
+        NATURAL JOIN escribir
+            JOIN autor
+            ON autor.autor_id = escribir.autor_id
 WHERE NOT EXISTS (
     SELECT *
-    FROM leer
-    WHERE amigo.num = num
+    FROM escribir
+    WHERE autor_id = autor.autor_id
     AND cod_ob NOT IN (
         SELECT cod_ob
-        FROM escribir
-        WHERE autor_id = autor.autor_id
-    )
-) AND EXISTS (
-    SELECT *
-    FROM leer
-    WHERE amigo.num = num
-    AND cod_ob IN (
-        SELECT cod_ob
-        FROM escribir
-        WHERE autor_id = autor.autor_id
+        FROM leer
+        WHERE num = amigo.num
     )
 );
 
 -- Exercise 24
+-- someone who ONLY has read books by X
+-- someone who hasn't read a work NOT by CAMA but has read something
 -- untested
 SELECT nombre
 FROM amigo
-WHERE num IN (
-    SELECT num
-    FROM leer
-    WHERE NOT EXISTS (
-        SELECT *
-        FROM escribir
-        WHERE leer.cod_ob = cod_ob
-        AND autor_id <> 'CAMA'
-    ) AND EXISTS (
-        SELECT *
-        FROM escribir
-        WHERE leer.cod_ob = cod_ob
-        AND autor_id = 'CAMA'
+WHERE NOT EXISTS (
+    SELECT *
+    FROM escribir
+    WHERE autor_id <> 'CAMA'
+    AND cod_ob IN (
+        SELECT cod_ob
+        FROM leer
+        WHERE num = amigo.num
+    )
+) AND EXISTS (
+    SELECT *
+    FROM escribir
+    WHERE cod_ob IN (
+        SELECT cod_ob
+        FROM leer
+        WHERE num = amigo.num
     )
 );
 
 -- Exercise 25
+-- someone who hasn't read a work NOT by GUAP but has read something
 -- untested
 SELECT nombre
 FROM amigo
@@ -301,6 +297,7 @@ WHERE num IN (
 );
 
 -- Exercise 26
+-- someone who have read a work and haven't read a work by another author
 -- untested
 SELECT nombre
 FROM amigo
@@ -347,33 +344,31 @@ WHERE num IN (
 );
 
 -- Exercise 28
--- untested
-SELECT  amigo.nombre, autor.nombre
-FROM amigo, autor
-WHERE num IN (
-    SELECT num
-    FROM leer
-    WHERE cod_ob IN (
+SELECT DISTINCT amigo.nombre, autor.nombre
+FROM amigo 
+    JOIN leer 
+    ON (amigo.num = leer.num)
+        NATURAL JOIN escribir
+            JOIN autor
+            ON autor.autor_id = escribir.autor_id
+WHERE NOT EXISTS (
+    SELECT *
+    FROM escribir
+    WHERE autor_id = autor.autor_id
+    AND cod_ob NOT IN (
         SELECT cod_ob
-        FROM escribir e
-        WHERE NOT EXISTS (
-            SELECT *
-            FROM escribir
-            WHERE e.autor_id <> autor_id
-            AND autor.autor_id = autor_id
-            AND cod_ob IN (
-                SELECT cod_ob
-                FROM leer
-                WHERE num = amigo.num
-            )
-        ) AND autor.autor_id = autor_id
+        FROM leer
+        WHERE num = amigo.num
     )
 ) AND NOT EXISTS (
     SELECT *
-    FROM leer, escribir
-    WHERE amigo.num <> num
-    AND leer.cod_ob = escribir.cod_ob
-    AND escribir.autor_id = autor.autor_id
+    FROM escribir
+    WHERE autor_id <> autor.autor_id
+    AND cod_ob IN (
+        SELECT cod_ob
+        FROM leer
+        WHERE num = amigo.num
+    )
 );
 
 
