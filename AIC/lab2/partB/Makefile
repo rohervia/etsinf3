@@ -1,0 +1,60 @@
+#######
+
+CFLAGS		= -O2 -fno-strength-reduce  -W 
+YACCCFLAGS	= -Wno-unused -Wno-parentheses
+CC		= gcc
+SHELL		= /bin/sh
+CDEPEND		= makedepend
+
+####### Files
+
+HEADERS =	main.h tipos.h
+SOURCES =	main.c \
+		input.yacc.y \
+		input.lex.l \
+		etiquetas.c \
+		presentacion-html.c \
+		presentacion-txt.c \
+		mips.c
+
+OBJECTS =	main.o \
+		input.yacc.o \
+		input.lex.o \
+		etiquetas.o \
+		presentacion-html.o \
+		presentacion-txt.o \
+		mips.o
+
+TARGET	=	mips
+
+####### Build rules
+
+$(TARGET):  $(OBJECTS) 
+	$(CC) $(OBJECTS) -o $(TARGET) $(LFLAGS) 
+
+clean:
+	rm -f $(OBJECTS) $(TARGET) $(TARGET)-html
+	rm *.yacc.[ch] *.lex.c
+
+all: 
+	touch $(SOURCES)
+	make $(TARGET)
+
+### Para lex y yacc
+
+%.o : %.c tipos.h main.h
+	$(CC) -c $(CFLAGS) -o $@ $<
+
+input.lex.c : input.lex.l input.yacc.h
+input.yacc.c : input.yacc.y
+input.yacc.h : input.yacc.y
+
+%.lex.c: %.lex.l %.yacc.h
+	lex -t $*.lex.l > $*.lex.c
+
+%.yacc.c: %.yacc.y
+	bison -o $*.yacc.c $*.yacc.y 
+
+%.yacc.h: %.yacc.y
+	bison -o $*.yacc.c -d $*.yacc.y
+

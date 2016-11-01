@@ -1,0 +1,62 @@
+/*** Begin prototypes ***/
+
+#ifdef presentatxt_C
+
+/***************************************************************
+ *
+ * Func: imprime_instruccion
+ *
+ * Parametros:
+ *	instruc  (char *) ; 
+ *
+ * Descripción: 
+ *   Imprime la intrucción localizada en el PC sobre la
+ *   cadena de caracteres 'instruc'
+ *
+ **************************************************************/
+
+static void imprime_instruccion 
+	(
+	 word PC,
+	 char * instruc
+	);
+
+#endif
+
+/***************************************************************
+ *
+ * Func: imprime_etapas
+ *
+ * Description: 
+ *   Muestra las fases del ciclo y las instrucciones que contienen
+ *
+ **************************************************************/
+
+void imprime_etapas (  
+   );
+   
+/***************************************************************
+ *
+ * Func: imprime_reg
+ *
+ * Description: 
+ *   Muestra el contenido del banco de registros
+ *
+ **************************************************************/
+
+void imprime_reg (  
+	);
+
+/***************************************************************
+ *
+ * Func: imprime_memdatos
+ *
+ * Description: 
+ *   Muestra el contenido de la memoria de datos
+ *
+ **************************************************************/
+
+void imprime_memdatos ( );
+
+
+/*** End prototypes ***/

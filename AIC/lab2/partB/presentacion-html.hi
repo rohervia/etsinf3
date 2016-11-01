@@ -1,0 +1,98 @@
+/*** Begin prototypes ***/
+
+#ifdef presentacion_C
+
+/***************************************************************
+ *
+ * Func: imprime_instruccion
+ *
+ * Parametros:
+ *	instruc  (char *) ; 
+ *
+ * Descripción: 
+ *   Imprime la intrucción localizada en el PC sobre la
+ *   cadena de caracteres 'instruc'
+ *
+ **************************************************************/
+
+static void imprime_instruccion 
+	(
+	 char * instruc,
+	 word PC
+	);
+
+#endif
+
+/***************************************************************
+ *
+ * Func: init_instruc
+ *
+ * Description: 
+ *   Inicializa una instrucción en el cronograma
+ *
+ **************************************************************/
+
+void init_instruc 
+	(
+	 word PC,
+	 ulong orden
+	);
+
+/***************************************************************
+ *
+ * Func: muestra_fase
+ *
+ * Description: 
+ *   Muestra la fase de cada instrucción en el cronograma
+ *
+ **************************************************************/
+
+void muestra_fase 
+	(
+	 char * fase,
+	 ulong orden
+	);
+
+/***************************************************************
+ *
+ * Func: actualiza_crono
+ *
+ * Description: 
+ *   Actualiza el cronograma con el estado de las fases
+ *
+ **************************************************************/
+
+void actualiza_crono ( );
+
+/***************************************************************
+ *
+ * Func: imprime_estado
+ *
+ * Desc: Imprime el estado de las estructuras de coma flotante
+ *
+ **************************************************************/
+
+void imprime_estado ( );
+
+/***************************************************************
+ *
+ * Func: imprime_crono
+ *
+ * Desc: Imprime el cronograma de ejecución
+ *
+ **************************************************************/
+
+void imprime_crono ( );
+
+/***************************************************************
+ *
+ * Func: imprime_inicio
+ *
+ * Desc: Imprime el cronograma de ejecución
+ *
+ **************************************************************/
+
+void imprime_inicio ( );
+
+
+/*** End prototypes ***/
