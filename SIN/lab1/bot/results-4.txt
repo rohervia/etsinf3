@@ -1,0 +1,40 @@
+==========================DFS 50==========================================
+Solution at level 50
+f-0     (initial-fact)
+f-1     (grid 5 4)
+f-2     (warehouse 2 3)
+f-3     (robot 1 3 0 lamp 3 4 3 lamp 4 2 2 lamp 5 4 2 lamp 4 4 3 level 0)
+f-4     (max-level 50)
+f-5     (max-bulbs 3)
+For a total of 4411 facts.
+
+=========================BFS==============================================
+Solution at level 29
+f-0     (initial-fact)
+f-1     (grid 5 4)
+f-2     (warehouse 2 3)
+f-3     (robot 1 3 0 lamp 3 4 3 lamp 4 2 2 lamp 5 4 2 lamp 4 4 3 level 0)
+f-4     (max-level 50)
+f-5     (max-bulbs 3)
+For a total of 4662 facts.
+
+=========================DFS 29===========================================
+Solution at level 29
+f-0     (initial-fact)
+f-1     (grid 5 4)
+f-2     (warehouse 2 3)
+f-3     (robot 1 3 0 lamp 3 4 3 lamp 4 2 2 lamp 5 4 2 lamp 4 4 3 level 0)
+f-4     (max-level 29)
+f-5     (max-bulbs 3)
+For a total of 4341 facts.
+
+=========================A*===============================================
+Input the maximum level: 100
+All lamps fixed! At level 30
+f-0     (initial-fact)
+f-1     (grid 5 4)
+f-2     (max-bulbs 3)
+f-3     (warehouse 2 3)
+f-5     (robot 1 3 0 lamp 3 4 3 lamp 4 2 2 lamp 5 4 2 lamp 4 4 3 level 0 fact -1)
+f-6     (max-level 100)
+For a total of 38 facts.
