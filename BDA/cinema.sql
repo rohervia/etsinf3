@@ -592,18 +592,23 @@ HAVING COUNT(p.cod_peli) >= ALL (
 );
 
 -- Exercise 47
--- not working
-SELECT p.cod_pais, p.nombre
-FROM cs_pais p, cs_actor a, cs_actua x, cs_pelicula pe
-WHERE p.cod_pais = a.cod_pais
-AND a.cod_act = x.cod_act
-AND pe.cod_peli = x.cod_peli
-GROUP BY p.cod_pais, p.nombre
-HAVING COUNT(x.cod_peli) = 2
-AND COUNT(DISTINCT a.cod_act) >= ALL (
-    SELECT COUNT(x2.cod_act)
-    FROM cs_actua x2
-    WHERE x2.cod_act = x.cod_act
+SELECT cod_pais, cs_pais.nombre
+FROM cs_pais LEFT JOIN cs_actor USING (cod_pais)
+WHERE cod_act IN (
+    SELECT cod_act
+    FROM cs_actua
+    GROUP BY cod_act
+    HAVING COUNT(DISTINCT cod_peli) = 2
+) GROUP BY cod_pais, cs_pais.nombre
+HAVING COUNT(cod_act) >= ALL (
+    SELECT COUNT(cod_act)
+    FROM cs_pais LEFT JOIN cs_actor USING (cod_pais)
+    WHERE cod_act IN (
+        SELECT cod_act
+        FROM cs_actua
+        GROUP BY cod_act
+        HAVING COUNT(DISTINCT cod_peli) = 2
+    ) GROUP BY cod_pais
 );
 
 -- Exercise 48
@@ -659,13 +664,45 @@ ORDER BY titulo;
 -- QUERIES WITH SET OPERATIONS
 
 -- Exercise 54
--- not begun
-
+SELECT anyo
+FROM cs_libro
+WHERE anyo IS NOT NULL
+AND anyo NOT LIKE '%9%'
+  UNION
+SELECT anyo
+FROM cs_pelicula
+WHERE anyo IS NOT NULL
+AND anyo NOT LIKE '%9%';
 
 -- OTHER QUERIES
 
 -- Exercise 55
--- not begun
+SELECT cod_gen, nombre
+FROM cs_genero LEFT JOIN cs_clasificacion USING (cod_gen)
+WHERE cod_peli IN (
+    SELECT cod_peli
+    FROM cs_pelicula
+    WHERE duracion = (
+        SELECT MAX(duracion)
+        FROM cs_pelicula
+    )
+);
 
 -- Exercise 56
--- not begun
+SELECT cs_actor.cod_act, nombre, fecha_nac, COUNT(cod_peli) CUANTOS
+FROM cs_actor 
+    LEFT JOIN cs_actua 
+    ON papel = 'Principal' 
+    AND cs_actor.cod_act = cs_actua.cod_act
+WHERE cs_actor.cod_act IN (
+    SELECT cod_act
+    FROM cs_actor
+    WHERE fecha_nac < '01/01/1948'
+    AND cod_act IN (
+        SELECT cod_act
+        FROM cs_actua
+        GROUP BY cod_act
+        HAVING COUNT(DISTINCT cod_peli) >= 2
+    )
+) GROUP BY cs_actor.cod_act, nombre, fecha_nac
+ORDER BY nombre;

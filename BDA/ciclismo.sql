@@ -1,51 +1,42 @@
 -- QUERIES USING 1 RELATION
 
 -- Exercise 1
--- untested
-SELECT cod, tipo, color, premio
+SELECT codigo, tipo, color, premio
 FROM maillot;
 
 -- Exercise 2
--- untested
 SELECT dorsal, nombre
 FROM ciclista
 WHERE edad <= 25;
 
 -- Exercise 3
--- untested
 SELECT nompuerto, altura
 FROM puerto
 WHERE categoria = 'E';
 
 -- Exercise 4
--- untested
 SELECT netapa
 FROM etapa
 WHERE salida = llegada;
 
 -- Exercise 5
--- untested
 SELECT COUNT(*)
 FROM ciclista;
 
 -- Exercise 6
--- untested
 SELECT COUNT(*)
 FROM ciclista
 WHERE edad > 25;
 
 -- Exercise 7
--- untested
 SELECT COUNT(*)
 FROM equipo;
 
 -- Exercise 8
--- untested
 SELECT AVG(edad)
 FROM ciclista;
 
 -- Exercise 9
--- untested
 SELECT MIN(altura), MAX(altura)
 FROM puerto;
 
@@ -53,43 +44,39 @@ FROM puerto;
 -- QUERIES USING MORE THAN 1 RELATION
 
 -- Exercise 10
--- untested
 SELECT nompuerto, categoria C
 FROM puerto, ciclista
 WHERE puerto.dorsal = ciclista.dorsal
 AND nomeq = 'Banesto';
 
 -- Exercise 11
--- untested
 SELECT nompuerto, puerto.netapa, km
 FROM puerto, etapa
 WHERE puerto.netapa = etapa.netapa;
 
 -- Exercise 12
--- untested
-SELECT equipo.nomeq, director
+SELECT DISTINCT equipo.nomeq, director
 FROM equipo, ciclista
 WHERE equipo.nomeq = ciclista.nomeq
 AND edad > 33;
 
 -- Exercise 13
--- untested
-SELECT nombre, color
+SELECT DISTINCT nombre, color
 FROM ciclista c, llevar l, maillot m
 WHERE c.dorsal = l.dorsal
-AND l.codigo = m.codigo;
+AND l.codigo = m.codigo
+ORDER BY nombre;
 
 -- Exercise 14
--- untested
-SELECT nombre, netapa
+SELECT DISTINCT c.nombre, e.netapa
 FROM etapa e, ciclista c, llevar l, maillot m
 WHERE e.dorsal = c.dorsal
 AND c.dorsal = l.dorsal
 AND l.codigo = m.codigo
-AND color = 'Amarillo';
+AND color = 'Amarillo'
+ORDER BY c.nombre;
 
 -- Exercise 15
--- untested
 SELECT e.netapa
 FROM etapa e, etapa e2
 WHERE e2.netapa = e.netapa - 1
@@ -99,7 +86,6 @@ AND e2.llegada <> e.salida;
 -- QUERIES WITH SUBQUERIES
 
 -- Exercise 16
--- untested
 SELECT netapa, salida
 FROM etapa
 WHERE netapa NOT IN (
@@ -108,7 +94,6 @@ WHERE netapa NOT IN (
 );
 
 -- Exercise 17
--- untested
 SELECT AVG(edad)
 FROM ciclista
 WHERE dorsal IN (
@@ -117,7 +102,6 @@ WHERE dorsal IN (
 );
 
 -- Exercise 18
--- untested
 SELECT nompuerto
 FROM puerto
 WHERE altura > (
@@ -126,7 +110,6 @@ WHERE altura > (
 );
 
 -- Exercise 19
--- untested
 SELECT salida, llegada
 FROM etapa
 WHERE netapa IN (
@@ -139,7 +122,6 @@ WHERE netapa IN (
 );
 
 -- Exercise 20
--- untested
 SELECT dorsal, nombre
 FROM ciclista
 WHERE dorsal IN (
@@ -152,7 +134,6 @@ WHERE dorsal IN (
 );
 
 -- Exercise 21
--- untested
 SELECT nombre
 FROM ciclista
 WHERE edad = (
@@ -161,16 +142,18 @@ WHERE edad = (
 );
 
 -- Exercise 22
--- untested
 SELECT nombre
-FROM ciclista c
+FROM ciclista
 WHERE dorsal IN (
     SELECT dorsal
     FROM etapa
 ) AND edad = (
     SELECT MIN(edad)
     FROM ciclista
-    WHERE c.dorsal = dorsal
+    WHERE dorsal IN (
+        SELECT dorsal
+        FROM etapa
+    )
 );
 
 -- Exercise 23
@@ -186,18 +169,20 @@ WHERE 1 < (
 -- QUERIES WITH UNIVERSAL QUANTIFICATION
 
 -- Exercise 24
--- untested
-SELECT netapa
+SELECT DISTINCT netapa
 FROM etapa
 WHERE NOT EXISTS (
     SELECT *
     FROM puerto
     WHERE etapa.netapa = netapa
     AND altura <= 700
-);
+) AND EXISTS (
+    SELECT *
+    FROM puerto
+    WHERE etapa.netapa = netapa
+) ORDER BY netapa;
 
 -- Exercise 25
--- untested
 SELECT nomeq, director
 FROM equipo
 WHERE NOT EXISTS (
@@ -205,10 +190,13 @@ WHERE NOT EXISTS (
     FROM ciclista
     WHERE nomeq = equipo.nomeq
     AND edad <= 25
-);
+) AND EXISTS (
+    SELECT * 
+    FROM ciclista
+    WHERE nomeq = equipo.nomeq
+) ORDER BY nomeq;
 
 -- Exercise 26
--- untested
 SELECT dorsal, nombre
 FROM ciclista
 WHERE NOT EXISTS (
@@ -216,11 +204,14 @@ WHERE NOT EXISTS (
     FROM etapa
     WHERE dorsal = ciclista.dorsal
     AND km <= 170
-);
+) AND EXISTS (
+    SELECT *
+    FROM etapa
+    WHERE dorsal = ciclista.dorsal
+) ORDER BY dorsal;
 
 
 -- Exercise 27
--- untested
 SELECT nombre
 FROM ciclista
 WHERE dorsal IN (
@@ -231,11 +222,14 @@ WHERE dorsal IN (
         FROM puerto
         WHERE netapa = etapa.netapa
         AND dorsal <> ciclista.dorsal
+    ) AND EXISTS (
+        SELECT *
+        FROM puerto
+        WHERE netapa = etapa.netapa
     )
 );
 
 -- Exercise 28
--- untested
 SELECT nomeq
 FROM equipo
 WHERE NOT EXISTS (
@@ -247,11 +241,14 @@ WHERE NOT EXISTS (
     ) AND dorsal NOT IN (
         SELECT dorsal
         FROM puerto
-    )
+    ) AND equipo.nomeq = ciclista.nomeq
+) AND EXISTS (
+    SELECT *
+    FROM ciclista
+    WHERE equipo.NOMEQ = ciclista.NOMEQ
 );
 
 -- Exercise 29
--- untested
 SELECT codigo, color
 FROM maillot
 WHERE codigo IN (
@@ -273,7 +270,6 @@ WHERE codigo IN (
 );
 
 -- Exercise 30
--- untested
 SELECT nomeq
 FROM equipo
 WHERE NOT EXISTS (
@@ -283,7 +279,15 @@ WHERE NOT EXISTS (
     AND dorsal IN (
         SELECT dorsal
         FROM puerto
-        WHERE categoria <> 1
+        WHERE categoria <> '1'
+    )
+) AND EXISTS (
+    SELECT * 
+    FROM ciclista
+    WHERE nomeq = equipo.nomeq
+    AND dorsal IN (
+        SELECT dorsal
+        FROM puerto
     )
 );
 
@@ -291,10 +295,84 @@ WHERE NOT EXISTS (
 -- QUERIES WITH GROUP BY
 
 -- Exercise 31
--- untested
+SELECT netapa, COUNT(nompuerto) num_puertos
+FROM etapa JOIN puerto USING (netapa)
+GROUP BY netapa
+ORDER BY netapa;
+
+-- Exercise 32
+SELECT nomeq, COUNT(dorsal) ciclistas
+FROM ciclista
+GROUP BY nomeq
+ORDER BY nomeq;
+
+-- Exercise 33
+SELECT nomeq, COUNT(dorsal) ciclistas
+FROM equipo NATURAL LEFT JOIN ciclista
+GROUP BY nomeq;
+
+-- Exercise 34
+SELECT director, nomeq
+FROM equipo NATURAL LEFT JOIN ciclista
+GROUP BY nomeq, director
+HAVING COUNT(dorsal) > 3
+AND AVG(edad) <= 30
+ORDER BY director;
+
+-- Exercise 35
+SELECT DISTINCT nombre, COUNT(netapa)
+FROM (ciclista NATURAL JOIN etapa) JOIN equipo ON (equipo.NOMEQ = ciclista.NOMEQ)
+WHERE 5 < (
+    SELECT COUNT(dorsal)
+    FROM ciclista
+    WHERE nomeq = equipo.nomeq
+) GROUP BY nombre
+ORDER BY nombre;
+
+-- Exercise 36
+SELECT nomeq, AVG(edad)
+FROM ciclista
+GROUP BY nomeq
+HAVING AVG(edad) >= ALL (
+    SELECT AVG(edad)
+    FROM ciclista
+    GROUP BY nomeq
+);
+
+-- Exercise 37
+SELECT director
+FROM equipo NATURAL JOIN ciclista NATURAL JOIN llevar
+GROUP BY director
+HAVING COUNT(codigo) >= ALL (
+    SELECT COUNT(codigo)
+    FROM equipo NATURAL JOIN ciclista NATURAL JOIN llevar
+    GROUP BY director
+);
 
 
 -- OTHER QUERIES
+
+-- Exercise 38
+SELECT codigo, color
+FROM maillot
+WHERE codigo IN (
+    SELECT codigo
+    FROM llevar
+    WHERE dorsal NOT IN (
+        SELECT dorsal
+        FROM etapa
+    )
+);
+
+-- Exercise 39
+SELECT netapa, salida, llegada
+FROM etapa
+WHERE km > 190
+AND 2 <= (
+    SELECT COUNT(nompuerto)
+    FROM puerto
+    WHERE netapa = etapa.netapa
+);
 
 -- Exercise 40
 SELECT dorsal, nombre
@@ -309,3 +387,108 @@ WHERE EXISTS (
         WHERE ciclista.dorsal = dorsal
     )
 );
+
+-- Exercise 41
+SELECT dorsal, nombre
+FROM ciclista
+WHERE dorsal IN (
+    SELECT dorsal
+    FROM llevar
+    WHERE codigo IN (
+        SELECT codigo
+        FROM llevar
+        WHERE dorsal = 20
+    )
+) AND dorsal <> 20
+ORDER BY dorsal;
+
+-- Exercise 42
+SELECT dorsal, nombre
+FROM ciclista
+WHERE dorsal NOT IN (
+    SELECT dorsal
+    FROM llevar
+    WHERE codigo IN (
+        SELECT codigo
+        FROM llevar
+        WHERE dorsal = 20
+    )
+);
+
+-- Exercise 43
+-- ciclista que ha ganado todos los maillots que ha ganado el 20
+-- ciclista al que no le falta ningun maillot ganado por el 20
+SELECT dorsal, nombre
+FROM ciclista
+WHERE NOT EXISTS (
+    SELECT *
+    FROM llevar
+    WHERE dorsal = 20
+    AND codigo NOT IN (
+        SELECT codigo
+        FROM llevar
+        WHERE dorsal = ciclista.dorsal   
+    )   
+) AND dorsal <> 20;
+
+-- Exercise 44
+-- ciclista que solo ha ganado los maillots que el 20 ha ganado
+-- ciclista que ha ganado todos los tipos de maillot que el 20
+-- ciclista que no ha ganado ningun maillot que 20 no ha ganado
+SELECT dorsal, nombre
+FROM ciclista
+WHERE NOT EXISTS ( -- he's won all those that 20 has
+    SELECT *
+    FROM llevar
+    WHERE dorsal = 20
+    AND codigo NOT IN (
+        SELECT codigo
+        FROM llevar
+        WHERE dorsal = ciclista.dorsal
+    )
+) AND dorsal <> 20
+AND NOT EXISTS ( -- he hasn't won any that 20 hasn't
+    SELECT *
+    FROM llevar
+    WHERE dorsal = ciclista.dorsal
+    AND codigo NOT IN (
+        SELECT codigo
+        FROM llevar
+        WHERE dorsal = 20
+    )
+);
+
+-- Exercise 45
+-- ciclista que ha ganado un maillot en etapas con SUM(km) > ANY other
+SELECT ciclista.dorsal, nombre, color
+FROM ciclista, llevar, etapa, maillot
+WHERE etapa.netapa = llevar.netapa
+AND ciclista.dorsal = llevar.dorsal
+AND llevar.codigo = maillot.codigo
+GROUP BY ciclista.dorsal, nombre, color
+HAVING SUM(km) >= ALL (
+    SELECT SUM(km)
+    FROM ciclista, llevar, etapa, maillot
+    WHERE etapa.netapa = llevar.netapa
+    AND llevar.codigo = maillot.codigo
+    AND ciclista.dorsal = llevar.dorsal
+    GROUP BY ciclista.dorsal, nombre, color
+);
+
+-- Exercise 46
+SELECT dorsal, nombre
+FROM ciclista NATURAL JOIN llevar
+GROUP BY dorsal, nombre
+HAVING COUNT(DISTINCT codigo) + 3 = (
+    SELECT COUNT(DISTINCT codigo)
+    FROM llevar
+    WHERE dorsal = 1
+) ORDER BY nombre;
+
+SELECT *
+FROM maillot;
+
+-- Exercise 47
+SELECT DISTINCT netapa, km
+FROM etapa JOIN puerto USING (netapa)
+ORDER BY netapa;
