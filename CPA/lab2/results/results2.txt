@@ -1,4 +1,0 @@
-encaja-seq
-Time > 15.376229nnencaja-par1
-Time > 0.730230nnencaja-par2
-Time > 12.794814

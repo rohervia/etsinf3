@@ -13,4 +13,5 @@ e4:
 	gcc -Wall -fopenmp -o encaja-e4-pX{,.c}
 
 clean:
-	rm -vf encaja-e?{-p?}
+	rm -vf encaja-e?{,-p?}
+	rm -f Lenna.ppm
