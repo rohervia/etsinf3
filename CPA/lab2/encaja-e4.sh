@@ -3,18 +3,10 @@
 #PBS -q cpa
 #PBS -d .
 
-make e4
+make -s e4
 
-echo ./encaja-e4-pJ
+echo -ne encaja-e4-pJ\t\t
 ./encaja-e4-pJ
-echo "cmp Lenna.ppm binLenna1024.ppm"
-cmp Lenna.ppm binLenna1024.ppm
 
-echo ''
-
-echo ./encaja-e4-pX
+echo -ne encaja-e4-pX\t\t
 ./encaja-e4-pX
-echo "cmp Lenna.ppm binLenna1024.ppm"
-cmp Lenna.ppm binLenna1024.ppm
-
-echo ''

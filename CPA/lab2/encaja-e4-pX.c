@@ -171,7 +171,7 @@ int main(int argc, char *argv[])
 
   t2 = omp_get_wtime();
 
-  printf("Time: %f\n", t2 - t1);
+  printf("%f\n", t2 - t1);
 
   if (escribir) if (escribe_ppm(salida, &ima)) return 3;
 
