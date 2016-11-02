@@ -13,7 +13,8 @@ e4:
 	gcc -Wall -fopenmp -o out/encaja-e4-pX src/encaja-e4-pX.c
 
 tex:
-	pdflatex -synctex=1 -interaction=nonstopmode pdf/report.tex > /dev/null
+	cd pdf; \
+		pdflatex -synctex=1 -interaction=nonstopmode report.tex > /dev/null
 
 clean:
 	rm -rf out
