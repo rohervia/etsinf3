@@ -36,8 +36,8 @@ Parallelize the execution of a program that reconstructs an image whose rows hav
 \end{figure}
 \begin{figure}[h]
     \centering
-    \begin{tabular}{l l r r r r r}
-        Program               & 2 Threads & 4 Threads & 8 Threads & 16 Threads & 32 Threads \\ \hline
+    \begin{tabular}{l r r r r r}
+        Program               & 2t        & 4t        & 8t        & 16t        & 32t        \\ \hline
         \texttt{encaja-e2-pJ} & 6.938746  & 3.548883  & 1.970450  & 1.183996   & 0.726187   \\
         \texttt{encaja-e2-pX} & 8.337415  & 5.464151  & 5.557857  & 8.197272   & 12.789012  \\
         \texttt{encaja-e4-pJ} & 1.439842  & 0.795035  & 0.496000  & 0.330912   & 0.256960   \\
@@ -46,4 +46,9 @@ Parallelize the execution of a program that reconstructs an image whose rows hav
     \caption{Parallel execution times}
 \end{figure}
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{img/time}
+    \caption{Threads\, \textemdash\unskip \, time graph}
+\end{figure}
 \end{document}

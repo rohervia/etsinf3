@@ -1,0 +1,23 @@
+# program			threads	timing
+encaja-e1			1		15.239413
+encaja-e3			1		2.733720
+encaja-e2-pJ		2		6.938746
+encaja-e2-pJ		4		3.548883
+encaja-e2-pJ		8		1.970450
+encaja-e2-pJ		16		1.183996
+encaja-e2-pJ		32		0.726187
+encaja-e2-pX		2		8.337415
+encaja-e2-pX		4		5.464151
+encaja-e2-pX		8		5.557857
+encaja-e2-pX		16		8.197272
+encaja-e2-pX		32		12.789012
+encaja-e4-pJ		2		1.439842
+encaja-e4-pJ		4		0.795035
+encaja-e4-pJ		8		0.496000
+encaja-e4-pJ		16		0.330912
+encaja-e4-pJ		32		0.256960
+encaja-e4-pX		2		4.065065
+encaja-e4-pX		4		4.217589
+encaja-e4-pX		8		5.164125
+encaja-e4-pX		16		8.656438
+encaja-e4-pX		32		13.590685
