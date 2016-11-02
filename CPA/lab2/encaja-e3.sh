@@ -3,9 +3,7 @@
 #PBS -q cpa
 #PBS -d .
 
-make e3
+make -s e3
 
-echo ./encaja-e3
+echo -ne encaja-e3\t\t
 ./encaja-e3
-echo "cmp Lenna.ppm binLenna1024.ppm"
-cmp Lenna.ppm binLenna1024.ppm

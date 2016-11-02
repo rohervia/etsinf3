@@ -18,3 +18,4 @@ tex:
 clean:
 	rm -f encaja-e?{-p?}
 	rm -f report.{aux,log,out,synctex.gz}
+	rm -f Lenna.ppm
