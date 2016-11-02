@@ -3,16 +3,17 @@
 #PBS -q cpa
 #PBS -d .
 
-echo encaja-seq
-./encaja-seq
+make e2
+
+echo ./encaja-e2-pJ
+./encaja-e2-pJ
 echo cmp Lenna.ppm binLenna1024.ppm
 cmp Lenna.ppm binLenna1024.ppm
-echo -e \n\nencaja-par1
-./encaja-par1
+
+echo ''
+
+echo ./encaja-e2-pX
+./encaja-e2-pX
 echo cmp Lenna.ppm binLenna1024.ppm
 cmp Lenna.ppm binLenna1024.ppm
-echo -e \n\nencaja-par2
-./encaja-par2
-echo cmp Lenna.ppm binLenna1024.ppm
-cmp Lenna.ppm binLenna1024.ppm
-echo -e \n
+echo ''

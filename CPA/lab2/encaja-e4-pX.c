@@ -117,12 +117,15 @@ void encaja(Imagen *ima)
     distancia_minima = grande;
     for (j = i + 1; j < ima->alto; j++) {
       distancia = 0;
-      for (x = 0; x < ima->ancho; x++) {
-        distancia += diferencia(&A(x, i), &A(x, j));
-		if (distancia >= distancia_minima) {
-		  break;
-		}
-	  }
+      #pragma omp parallel reduction(+:distancia) private(x)
+      {
+        int nt = omp_get_num_threads();
+        int idt = omp_get_thread_num();
+        for (x = idt; x < ima->ancho; x += nt) {
+          distancia += diferencia(&A(x, i), &A(x, j));
+          if (distancia >= distancia_minima) break;
+	}
+      }
       if (distancia < distancia_minima) {
         distancia_minima = distancia;
         linea_minima = j;
@@ -168,7 +171,7 @@ int main(int argc, char *argv[])
 
   t2 = omp_get_wtime();
 
-  printf("Time > %f\n", t2 - t1);
+  printf("Time: %f\n", t2 - t1);
 
   if (escribir) if (escribe_ppm(salida, &ima)) return 3;
 
