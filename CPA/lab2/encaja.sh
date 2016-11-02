@@ -2,7 +2,7 @@
 #PBS -l nodes=1,walltime=00:10:00
 #PBS -q cpa
 #PBS -d .
-#PBS -o res.csv
+#PBS -o csv/res.csv
 #PBS -e error
 
 if [[ $1 == seq ]] then;
@@ -11,9 +11,9 @@ if [[ $1 == seq ]] then;
 
     for file in $(ls src/encaja-e?); do
         printf "%s," $file;
-        src/$file -o img/Lenna.ppm;
-        if ! cmp img/Lenna.ppm img/binLenna1024.ppm; then
-            echo "%s execution was not correct" src/$file;
+        $file -o out/Lenna.ppm;
+        if ! cmp out/Lenna.ppm img/binLenna1024.ppm; then
+            echo "%s execution was not correct" $file;
         fi
     done
 
@@ -25,9 +25,9 @@ elif [[ $1 == par ]]; then
     for file in $(ls src/encaja-e?-p?); do
         printf "%s," $file;
         for threads in $(echo 2 4 8 16 32); do
-            OMP_NUM_THREADS=$threads src/$file -o img/Lenna.ppm;
-            if ! cmp img/Lenna.ppm img/binLenna1024.ppm; then
-                printf "%s execution with %d threads was not correct" src/$file $threads;
+            OMP_NUM_THREADS=$threads $file -o out/Lenna.ppm;
+            if ! cmp out/Lenna.ppm img/binLenna1024.ppm; then
+                printf "%s execution with %d threads was not correct" $file $threads;
             fi
             if [ $threads -ne 32 ]; then
                 printf ",";
