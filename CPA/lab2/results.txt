@@ -1,8 +1,0 @@
-# program 		time
-encaja-e1 		15.257217
-encaja-e2-pJ 	 0.730609
-encaja-e2-pX 	12.528260
-encaja-e3 		 2.725587
-encaja-e4-pJ 	 0.255715
-encaja-e4-pX 	13.463042
-
