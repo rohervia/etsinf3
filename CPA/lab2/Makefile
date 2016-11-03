@@ -16,6 +16,10 @@ tex:
 	cd pdf; \
 		pdflatex -synctex=1 -interaction=nonstopmode report.tex > /dev/null
 
+texv:
+	cd pdf; \
+		pdflatex -synctex=1 -interaction=nonstopmode report.tex
+
 clean:
 	rm -rf out
 	rm -f pdf/report.{aux,log,out,synctex.gz}
