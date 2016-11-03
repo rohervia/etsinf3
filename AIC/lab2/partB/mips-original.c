@@ -212,76 +212,76 @@ word operacion_ALU(byte codop, word in1, word in2)
   /*************************************/
 
   switch (codop) {
-  case OP_NOP:
-  case OP_TRAP:
-  case OP_ADD:
-  case OP_ADDI:
-    result = in1 + in2;
-    break;
-  case OP_SUB:
-  case OP_SUBI:
-    result = in1 - in2;
-    break;
-  case OP_AND:
-  case OP_ANDI:
-    result = in1 & in2;
-    break;
-  case OP_OR:
-  case OP_ORI:
-    result = in1 | in2;
-    break;
-  case OP_XOR:
-  case OP_XORI:
-    result = in1 ^ in2;
-    break;
-  case OP_SRA:
-  case OP_SRAI:
-    result = in1 >> (in2 & 0x1f);
-    break;
-  case OP_SLL:
-  case OP_SLLI:
-    result = in1 << (in2 & 0x1f);
-    break;
-  case OP_SRL:
-  case OP_SRLI:
-    tmp = in1;
-    tmp >>= (in2 & 0x1f);
-    result = tmp;
-    break;
-  case OP_SEQ:
-  case OP_SEQI:
-    result = (in1 == in2);
-    break;
-  case OP_SNE:
-  case OP_SNEI:
-    result = (in1 != in2);
-    break;
-  case OP_SGT:
-  case OP_SGTI:
-    result = (in1 > in2);
-    break;
-  case OP_SLT:
-  case OP_SLTI:
-    result = (in1 < in2);
-    break;
-  case OP_SGE:
-  case OP_SGEI:
-    result = (in1 >= in2);
-    break;
-  case OP_SLE:
-  case OP_SLEI:
-    result = (in1 <= in2);
-    break;
-  case OP_LW:
-  case OP_SW:
-  case OP_BEQZ: /* OJO, no con ds1 */
-  case OP_BNEZ:
-    result = in1 + in2;
-    break;
-  default:
-    fprintf(stderr, "ERROR (%d %d): Operacion no implementada\n", __LINE__,
-            ID_EX.IR.codop);
-    exit(1);
+    case OP_NOP:
+    case OP_TRAP:
+    case OP_ADD:
+    case OP_ADDI:
+      result = in1 + in2;
+      break;
+    case OP_SUB:
+    case OP_SUBI:
+      result = in1 - in2;
+      break;
+    case OP_AND:
+    case OP_ANDI:
+      result = in1 & in2;
+      break;
+    case OP_OR:
+    case OP_ORI:
+      result = in1 | in2;
+      break;
+    case OP_XOR:
+    case OP_XORI:
+      result = in1 ^ in2;
+      break;
+    case OP_SRA:
+    case OP_SRAI:
+      result = in1 >> (in2 & 0x1f);
+      break;
+    case OP_SLL:
+    case OP_SLLI:
+      result = in1 << (in2 & 0x1f);
+      break;
+    case OP_SRL:
+    case OP_SRLI:
+      tmp = in1;
+      tmp >>= (in2 & 0x1f);
+      result = tmp;
+      break;
+    case OP_SEQ:
+    case OP_SEQI:
+      result = (in1 == in2);
+      break;
+    case OP_SNE:
+    case OP_SNEI:
+      result = (in1 != in2);
+      break;
+    case OP_SGT:
+    case OP_SGTI:
+      result = (in1 > in2);
+      break;
+    case OP_SLT:
+    case OP_SLTI:
+      result = (in1 < in2);
+      break;
+    case OP_SGE:
+    case OP_SGEI:
+      result = (in1 >= in2);
+      break;
+    case OP_SLE:
+    case OP_SLEI:
+      result = (in1 <= in2);
+      break;
+    case OP_LW:
+    case OP_SW:
+    case OP_BEQZ: /* OJO, no con ds1 */
+    case OP_BNEZ:
+      result = in1 + in2;
+      break;
+    default:
+      fprintf(stderr, "ERROR (%d %d): Operacion no implementada\n", __LINE__,
+              ID_EX.IR.codop);
+      exit(1);
   } /* endswitch */
 
   return (result);
@@ -309,21 +309,21 @@ word operacion_COMP(byte codop, word in1)
 
   /*** Operacion en el comparador */
   switch (codop) {
-  case OP_BEQZ: /* OJO, no con ds1 */
-    if (in1 == 0)
-      result = 1;
-    else
-      result = 0;
-    break;
-  case OP_BNEZ: /* OJO, no con ds1 */
-    if (in1 != 0)
-      result = 1;
-    else
-      result = 0;
-    break;
-  default:
-    result = 0; /* No salta */
-  }             /* endswitch */
+    case OP_BEQZ: /* OJO, no con ds1 */
+      if (in1 == 0)
+        result = 1;
+      else
+        result = 0;
+      break;
+    case OP_BNEZ: /* OJO, no con ds1 */
+      if (in1 != 0)
+        result = 1;
+      else
+        result = 0;
+      break;
+    default:
+      result = 0; /* No salta */
+  }               /* endswitch */
   return (result);
 } /* end operacion_COMP */
 
@@ -348,26 +348,22 @@ word mux_ALUsup(word npc, word ra, word mem, word wb)
   /*************************************/
 
   switch (ID_EX.IR.codop) {
-  case OP_BNEZ: /* si es un salto */
-  case OP_BEQZ:
-    result = npc;
-    break;
-  default:       /* el resto de instrucciones */
-    result = ra; /* por defecto */
-    switch (solucion_riesgos_datos) {
+    case OP_BNEZ: /* si es un salto */
+    case OP_BEQZ:
+      result = npc;
+      break;
+    default:       /* el resto de instrucciones */
+      result = ra; /* por defecto */
+      switch (solucion_riesgos_datos) {
         case parada:
-            break;
+          break;
         case cortocircuito:
 
-                     /*  WBaEXalu_s */
-            if (usaIR_destino_MEM() && usaIR_fuente1_EX() && ID_EX.IR.Rfuente1 == EX_MEM.IR.Rdestino)
-                result = mem;
+          /** Insertar código */
+          /*  WBaEXalu_s */
           /*  MEMaEXalu_s */
-            if (usaIR_destino_WB() && usaIR_fuente1_EX() && ID_EX.IR.Rfuente1 == MEM_WB.IR.Rdestino)
-                result = wb;
-
-      break;
-    }
+          break;
+      }
   }
   return (result);
 } /* end mux_ALUsup */
@@ -394,36 +390,33 @@ word mux_ALUinf(word rb, word imm, word mem, word wb)
   /*************************************/
 
   switch (ID_EX.IR.codop) {
-  case OP_BNEZ: /* si es un salto */
-  case OP_BEQZ:
-    result = imm;
-    break;
-  default: /* el resto de instrucciones */
-    switch (ID_EX.IR.tipo) {
-    case FormatoR:
-      result = rb;
-      break;
-    case FormatoI:
+    case OP_BNEZ: /* si es un salto */
+    case OP_BEQZ:
       result = imm;
       break;
-    default:
-      fprintf(stderr, "ERROR (%d): Formato no implementado\n", __LINE__);
-      exit(1);
-    } /* endswitch */
+    default: /* el resto de instrucciones */
+      switch (ID_EX.IR.tipo) {
+        case FormatoR:
+          result = rb;
+          break;
+        case FormatoI:
+          result = imm;
+          break;
+        default:
+          fprintf(stderr, "ERROR (%d): Formato no implementado\n", __LINE__);
+          exit(1);
+      } /* endswitch */
 
-    switch (solucion_riesgos_datos) {
-    case parada:
-      break;
-    case cortocircuito:
+      switch (solucion_riesgos_datos) {
+        case parada:
+          break;
+        case cortocircuito:
 
-      /*  WBaEXalu_i */
-        if (usaIR_destino_WB() && usaIR_fuente2_EX() && ID_EX.IR.Rfuente2 == MEM_WB.IR.Rdestino)
-            result = wb;
-      /*  MEMaEXalu_i */
-        if (usaIR_destino_MEM() && usaIR_fuente2_EX() && ID_EX.IR.Rfuente2 == EX_MEM.IR.Rdestino)
-            result = mem;
-      break;
-    }
+          /** Insertar código */
+          /*  WBaEXalu_i */
+          /*  MEMaEXalu_i */
+          break;
+      }
   }
   return (result);
 } /* end mux_ALUinf */
@@ -451,17 +444,15 @@ word mux_COMP(word ra, word mem, word wb)
   result = ra; /* por defecto */
 
   switch (solucion_riesgos_datos) {
-  case parada:
-    break;
-  case cortocircuito:
+    case parada:
+      break;
+    case cortocircuito:
 
-    /* WBaEXcomp */
-    if (usaIR_destino_WB() && usaIR_fuente1_EX() && ID_EX.IR.Rfuente1 == MEM_WB.IR.Rdestino)
-        result = wb;
-    /* MEMaEXcomp */
-    if (usaIR_destino_MEM() && usaIR_fuente1_EX() && ID_EX.IR.Rfuente1 == EX_MEM.IR.Rdestino)
-        result = mem;
-    break;
+      /** Insertar código */
+
+      /* WBaEXcomp */
+      /* MEMaEXcomp */
+      break;
   }
   return (result);
 } /* end mux_COMP */
@@ -489,15 +480,15 @@ word mux_EXmem(word rb, word wb)
   result = rb; /* por defecto */
 
   switch (solucion_riesgos_datos) {
-  case parada:
-    break;
-  case cortocircuito:
+    case parada:
+      break;
+    case cortocircuito:
 
-    /* WBaEXmem */
-    if (usaIR_destino_WB() && usaIR_fuente2_EX() && ID_EX.IR.Rfuente2 == MEM_WB.IR.Rdestino)
-        result = wb;
-    /* MEMtoEX no hace falta. WBtoMEM lo resuelve */
-    break;
+      /** Insertar código */
+
+      /* WBaEXmem */
+      /* MEMtoEX no hace falta. WBtoMEM lo resuelve */
+      break;
   }
   return (result);
 } /* end mux_EXmem */
@@ -525,14 +516,13 @@ word mux_MEMmem(word rb, word wb)
   result = rb; /* por defecto */
 
   switch (solucion_riesgos_datos) {
-  case parada:
-    break;
-  case cortocircuito:
+    case parada:
+      break;
+    case cortocircuito:
 
-    /* WBaMEM */
-    if (usaIR_destino_WB() && usaIR_fuente2_EX() && EX_MEM.IR.Rfuente2 == MEM_WB.IR.Rdestino)
-        result = wb;
-    break;
+      /** Insertar código */
+      /* WBaMEM */
+      break;
   }
   return (result);
 
@@ -561,15 +551,15 @@ word mux_COMPid(word ra, word mem, word wb)
   result = ra; /* por defecto */
 
   switch (solucion_riesgos_datos) {
-  case parada:
-    break;
-  case cortocircuito:
+    case parada:
+      break;
+    case cortocircuito:
 
-    /** Insertar código */
+      /** Insertar código */
 
-    /* WBaID */
-    /* MEMaID */
-    break;
+      /* WBaID */
+      /* MEMaID */
+      break;
   }
 
   return (result);
@@ -603,40 +593,34 @@ void fase_busqueda() {
 
   /* riesgos de control */
   switch (solucion_riesgos_control) {
-  case ds3:
-  case stall:
-    if (EX_MEM.cond) {
-      PCn = EX_MEM.ALUout;
-    } else {
-      PCn = PC + 1;
-    }
-    break;
-
-  case ds2:
-
-    /** Insertar código */
-
-    break;
-
-  case pnt:
-    if (EX_MEM.cond) {
+    case ds3:
+    case stall:
+      if (EX_MEM.cond) {
         PCn = EX_MEM.ALUout;
-        IFnop = SI;
-        IDnop = SI;
-        EXnop = SI;
-    } else {
+      } else {
         PCn = PC + 1;
-    }
+      }
+      break;
 
-    break;
+    case ds2:
 
-  case ds1:
+      /** Insertar código */
 
-    /** Insertar código */
+      break;
 
-    break;
+    case pnt:
 
-  default:;
+      /** Insertar código */
+
+      break;
+
+    case ds1:
+
+      /** Insertar código */
+
+      break;
+
+    default:;
   } /* end switch */
 
 } /* end fase_busqueda */
@@ -686,28 +670,18 @@ int fase_decodificacion()
 
   switch (solucion_riesgos_datos) {
     case parada:
-      /* Riesgo entre EX e ID */
-      // The result of EX is the operand 1 or operand 2
-        if ((usaIR_destino_EX() &&
-                ((IF_ID.IR.Rfuente1 == ID_EX.IR.Rdestino && usaIR_fuente1_ID()) ||
-                 (IF_ID.IR.Rfuente2 == ID_EX.IR.Rdestino && usaIR_fuente2_ID()))) ||
-                (usaIR_destino_MEM() &&
-                ((IF_ID.IR.Rfuente1 == EX_MEM.IR.Rdestino && usaIR_fuente1_ID()) ||
-                 (IF_ID.IR.Rfuente2 == EX_MEM.IR.Rdestino && usaIR_fuente2_ID())))
-        ) IDstall = SI;
-      break;
+
+    /** Insertar código */
+
+    /* Riesgo entre EX e ID */
+
+    /* Riesgo entre MEM e ID */
 
     case cortocircuito:
 
       /* Riesgo entre LW en EX e ID */
-      if (usaIR_destino_EX() && ID_EX.IR.codop == OP_LW &&
-              ((IF_ID.IR.Rfuente1 == ID_EX.IR.Rdestino && usaIR_fuente1_ID()) ||
-               (IF_ID.IR.Rfuente2 == ID_EX.IR.Rdestino && usaIR_fuente2_ID())))
-          IDstall = SI;
-
 
       if (solucion_riesgos_control == ds1) {
-
         /* Riesgo entre EX e ID en los saltos */
       }
       break;
@@ -767,13 +741,13 @@ void fase_ejecucion()
   /* riesgos de control */
 
   switch (solucion_riesgos_control) {
-  case stall:
-    if (ID_EX.IR.codop == OP_BNEZ || ID_EX.IR.codop == OP_BEQZ) {
-      IFstall = SI;
-    }
-    break;
+    case stall:
+      if (ID_EX.IR.codop == OP_BNEZ || ID_EX.IR.codop == OP_BEQZ) {
+        IFstall = SI;
+      }
+      break;
 
-  default:;
+    default:;
   } /* end switch */
 
   /* multiplexores */
@@ -826,16 +800,16 @@ void fase_memoria()
 
   /* Riesgos de control */
   switch (solucion_riesgos_control) {
-  case stall:
-    if (EX_MEM.IR.codop == OP_BNEZ || EX_MEM.IR.codop == OP_BEQZ)
-      if (EX_MEM.cond) { /* salto que sí salta  -> cancelamos inst en IF */
-        IFnop = SI;
-      } else { /* salto que no salta -> que siga la inst en IF */
-        IFstall = SI;
-      }
-    break;
+    case stall:
+      if (EX_MEM.IR.codop == OP_BNEZ || EX_MEM.IR.codop == OP_BEQZ)
+        if (EX_MEM.cond) { /* salto que sí salta  -> cancelamos inst en IF */
+          IFnop = SI;
+        } else { /* salto que no salta -> que siga la inst en IF */
+          IFstall = SI;
+        }
+      break;
 
-  default:;
+    default:;
   } /* end switch */
 
   /* multiplexores */
@@ -844,13 +818,13 @@ void fase_memoria()
   /* acceso a memoria */
 
   switch (EX_MEM.IR.codop) {
-  case OP_LW:
-    MEM_WBn.MEMout = MD.mword[dir_word(EX_MEM.ALUout)];
-    break;
-  case OP_SW:
-    MD.mword[dir_word(EX_MEM.ALUout)] = data;
-    break;
-  default:;
+    case OP_LW:
+      MEM_WBn.MEMout = MD.mword[dir_word(EX_MEM.ALUout)];
+      break;
+    case OP_SW:
+      MD.mword[dir_word(EX_MEM.ALUout)] = data;
+      break;
+    default:;
   } /* endswitch */
 
   /* propagar datos */
@@ -890,24 +864,24 @@ boolean fase_escritura()
   final = NO;
 
   switch (MEM_WB.IR.codop) {
-  case OP_LW:
-    if (MEM_WB.IR.Rdestino != 0) {
-      Rint[MEM_WB.IR.Rdestino].valor = MEM_WB.MEMout;
-      WBdata = MEM_WB.MEMout;
-    }
-    break;
-  case OP_SW:
-  case OP_BEQZ:
-  case OP_BNEZ:
-    break;
-  case OP_TRAP:
-    final = SI;
-    break;
-  default:
-    if (MEM_WB.IR.Rdestino != 0) {
-      Rint[MEM_WB.IR.Rdestino].valor = MEM_WB.ALUout;
-      WBdata = MEM_WB.ALUout;
-    }
+    case OP_LW:
+      if (MEM_WB.IR.Rdestino != 0) {
+        Rint[MEM_WB.IR.Rdestino].valor = MEM_WB.MEMout;
+        WBdata = MEM_WB.MEMout;
+      }
+      break;
+    case OP_SW:
+    case OP_BEQZ:
+    case OP_BNEZ:
+      break;
+    case OP_TRAP:
+      final = SI;
+      break;
+    default:
+      if (MEM_WB.IR.Rdestino != 0) {
+        Rint[MEM_WB.IR.Rdestino].valor = MEM_WB.ALUout;
+        WBdata = MEM_WB.ALUout;
+      }
   } /* endswitch */
 
   return (final);

@@ -1,0 +1,2 @@
+If we need to query about a stage X, we use usaIR_*_X() and Y_X
+If ID is stalled but IF is not, one instruction will disappear
