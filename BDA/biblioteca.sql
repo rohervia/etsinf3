@@ -242,7 +242,7 @@ FROM amigo
 WHERE NOT EXISTS (
     SELECT *
     FROM escribir
-    WHERE autor_id = autor.autor_id
+    WHERE autor_id = autor.autorz_id
     AND cod_ob NOT IN (
         SELECT cod_ob
         FROM leer
@@ -253,52 +253,40 @@ WHERE NOT EXISTS (
 -- Exercise 24
 -- someone who ONLY has read books by X
 -- someone who hasn't read a work NOT by CAMA but has read something
--- untested
 SELECT nombre
 FROM amigo
-WHERE NOT EXISTS (
-    SELECT *
-    FROM escribir
-    WHERE autor_id <> 'CAMA'
-    AND cod_ob IN (
+WHERE num NOT IN (
+    SELECT num
+    FROM leer
+    WHERE cod_ob NOT IN (
         SELECT cod_ob
-        FROM leer
-        WHERE num = amigo.num
+        FROM escribir
+        WHERE autor_id = 'CAMA'
     )
-) AND EXISTS (
-    SELECT *
-    FROM escribir
-    WHERE cod_ob IN (
-        SELECT cod_ob
-        FROM leer
-        WHERE num = amigo.num
-    )
+) AND num IN (
+    SELECT num
+    FROM leer
 );
 
 -- Exercise 25
 -- someone who hasn't read a work NOT by GUAP but has read something
--- untested
 SELECT nombre
 FROM amigo
 WHERE num IN (
     SELECT num
     FROM leer
-    WHERE NOT EXISTS (
-        SELECT *
+) AND num NOT IN (
+    SELECT num
+    FROM leer
+    WHERE cod_ob NOT IN (
+        SELECT cod_ob
         FROM escribir
-        WHERE leer.cod_ob = cod_ob
-        AND autor_id <> 'CAMA'
-    ) AND EXISTS (
-        SELECT *
-        FROM escribir
-        WHERE leer.cod_ob = cod_ob
-        AND autor_id = 'CAMA'
+        WHERE autor_id = 'GUAP'
     )
 );
 
 -- Exercise 26
 -- someone who have read a work and haven't read a work by another author
--- untested
 SELECT nombre
 FROM amigo
 WHERE num IN (
@@ -321,25 +309,18 @@ WHERE num IN (
 );
 
 -- Exercise 27
--- untested
 SELECT amigo.nombre, autor.nombre
 FROM amigo, autor
 WHERE num IN (
-    SELECt num
+    SELECT num
     FROM leer
-    WHERE cod_ob IN (
+) AND num NOT IN (
+    SELECT num
+    FROM leer
+    WHERE cod_ob NOT IN (
         SELECT cod_ob
-        FROM escribir e
-        WHERE NOT EXISTS (
-            SELECT *
-            FROM escribir
-            WHERE e.autor_id <> autor_id
-            AND cod_ob IN (
-                SELECT cod_ob
-                FROM leer
-                WHERE num = amigo.num
-            )
-        ) AND autor.autor_id = autor_id
+        FROM escribir
+        WHERE autor_id = autor.autor_id
     )
 );
 
@@ -487,3 +468,18 @@ WHERE num NOT IN (
 -- Exercise 41
 -- untested
 -- which friend has read the most works (don't GROUP BY)
+-- friend such that its COUNT(cod_ob) is higher than every other guy
+SELECT nombre
+FROM amigo a
+WHERE num IN (
+    SELECT num
+    FROM leer
+    WHERE (SELECT COUNT(cod_ob) FROM leer WHERE a.num = num) >= ALL (
+        SELECT (
+            SELECT COUNT(cod_ob) c 
+            FROM leer
+            WHERE a.num = num
+        ) FROM leer;
+        WHERE a.num = num
+    )
+);
