@@ -466,20 +466,22 @@ WHERE num NOT IN (
 );
 
 -- Exercise 41
--- untested
 -- which friend has read the most works (don't GROUP BY)
 -- friend such that its COUNT(cod_ob) is higher than every other guy
 SELECT nombre
 FROM amigo a
 WHERE num IN (
     SELECT num
-    FROM leer
-    WHERE (SELECT COUNT(cod_ob) FROM leer WHERE a.num = num) >= ALL (
+    FROM leer l2
+    WHERE (
+        SELECT COUNT(cod_ob)
+        FROM leer
+        WHERE l2.num = num
+    ) >= ALL (
         SELECT (
             SELECT COUNT(cod_ob) c 
             FROM leer
-            WHERE a.num = num
-        ) FROM leer;
-        WHERE a.num = num
+            WHERE l.num = num
+        ) FROM leer l 
     )
 );
