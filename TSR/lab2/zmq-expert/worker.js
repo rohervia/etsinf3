@@ -12,7 +12,7 @@ var url = process.argv[2];
 var statusport = process.argv[3];
 var identity = process.argv[4]
 var message = process.argv[5];
-var available = process.argv[6]
+var available = process.argv[6];
 var debug = function() {};
 if (process.argv.length == 8 && process.argv[7] == '-v')
     debug = console.log;
@@ -44,5 +44,13 @@ req.on('message', function() {
     }, 1000);
 });
 
-req.send(available);
+req.send([aux.getLoad(), statusport]);
 debug('Init message sent');
+
+process.on('SIGTERM', function() {
+    status.close();
+    req.close(function () {
+        process.exit(-1);
+    });
+});
+
